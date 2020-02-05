@@ -1,12 +1,11 @@
 package com.muiz6.attendancesystem;
 
-// import org.joda.time.LocalTime;
+import com.muiz6.attendancesystem.ui.UI;
 
 public class Main {
     public static void main(String args[]) {
         System.out.println("Hello World!");
 
-        // LocalTime time = new LocalTime();
-        // System.out.println("time: "+time);
+        new UI();
     }
 }
