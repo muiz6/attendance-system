@@ -43,6 +43,12 @@ public class UI {
         btn.setAlignmentX(Component.CENTER_ALIGNMENT);
         btn.setAlignmentY(Component.CENTER_ALIGNMENT);
 
+        CompanyLogo logo = new CompanyLogo();
+        // logo.setSize(panel.getWidth(), panel.getWidth());
+
+        // ImageIcon;
+
+        panel.add(logo);
         panel.add("Email:", input);
         panel.add("Password:", passw);
         panel.add(btn);
