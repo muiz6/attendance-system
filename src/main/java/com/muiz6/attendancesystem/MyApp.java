@@ -11,8 +11,9 @@ public class MyApp extends Application{
         launch(args);
     }
 
+    @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("JavaFX WebView Example");
+        primaryStage.setTitle("Bedford International School - Portal");
 
         WebView webView = new WebView();
 

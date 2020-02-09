@@ -12,11 +12,6 @@ javafx {
     modules = [ 'javafx.controls','javafx.web']
 }
 
-// dependencies {
-//     compile "joda-time:joda-time:2.2"
-//     testCompile "junit:junit:4.12"
-// }
-
 jar {
     baseName = 'gs-gradle'
     version =  '0.1.0'
