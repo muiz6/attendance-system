@@ -1,68 +1,38 @@
 package com.muiz6.attendancesystem.ui;
 
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+import java.awt.event.*;
 
 import javax.swing.*;
 
-public class UI {
+import com.muiz6.attendancesystem.ui.login.LoginScreen;
+
+public class UI extends JFrame {
+
+    // default serial version id
+    private static final long serialVersionUID = 1L;
+
     private String title = "Bedford International School and Academy Portal";
-    private JFrame frame;
-    private JPanel panel;
 
     public UI() {
-        frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setTitle(this.title);
-        frame.setSize(800, 600);
-        frame.setMaximumSize(new Dimension(800, 600));
-        frame.setLayout(null);
-        frame.setBackground(new Color(167, 219, 198));
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle(this.title);
+        this.setSize(800, 600);
+        this.setMaximumSize(new Dimension(800, 600));
+        this.setLayout(null);
+        this.setBackground(new Color(167, 219, 198));
 
-        // layout for panel
-        GridLayout layout = new GridLayout(3, 1);
-        layout.setVgap(20);
-        layout.setHgap(20);
+        JPanel panel = new LoginScreen(this);
 
-        panel = new JPanel(layout);
-        panel.setSize(400, 600);
-        panel.setLocation(200, 0);
+        this.add(panel);
 
-        JTextField input = new JTextField(25);
-        input.setMaximumSize(new Dimension(300, 50));
-        input.setAlignmentX(Component.CENTER_ALIGNMENT);
-        input.setAlignmentY(Component.CENTER_ALIGNMENT);
+        this.setVisible(true);
+    }
 
-        JPasswordField passw = new JPasswordField(25);
-        passw.setMaximumSize(new Dimension(300, 50));
-        passw.setAlignmentX(Component.CENTER_ALIGNMENT);
-        passw.setAlignmentY(Component.CENTER_ALIGNMENT);
+    public void login() {
+        this.removeAll();
 
-        JButton btn = new JButton("Login");
-        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
-        btn.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-        CompanyLogo logo = new CompanyLogo();
-        // logo.setSize(panel.getWidth(), panel.getWidth());
-
-        // ImageIcon;
-
-        panel.add(logo);
-        panel.add("Email:", input);
-        panel.add("Password:", passw);
-        panel.add(btn);
-
-        frame.add(panel);
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                Component component = e.getComponent();
-                int x = (component.getWidth() - panel.getWidth()) / 2;
-                panel.setLocation(x, 0);
-                panel.setSize(panel.getWidth(), component.getHeight());
-            }
-        });
-        frame.setVisible(true);
+        // TODO: replace menu screen
+        this.add(new JPanel());
     }
 }

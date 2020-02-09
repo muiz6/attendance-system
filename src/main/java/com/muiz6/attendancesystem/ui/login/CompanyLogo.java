@@ -1,4 +1,4 @@
-package com.muiz6.attendancesystem.ui;
+package com.muiz6.attendancesystem.ui.login;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
