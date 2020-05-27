@@ -1,20 +1,19 @@
 plugins {
-  id 'application'
-  id 'org.openjfx.javafxplugin' version '0.0.8'
+    id 'java'
+}
+
+group 'com.muiz6'
+version '0.1'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_7
+    targetCompatibility = JavaVersion.VERSION_1_7
 }
 
 repositories {
     mavenCentral()
 }
 
-javafx {
-    version = "13"
-    modules = [ 'javafx.controls','javafx.web']
+dependencies {
+//    testCompile group: 'junit', name: 'junit', version: '4.12'
 }
-
-jar {
-    baseName = 'gs-gradle'
-    version =  '0.1.0'
-}
-
-mainClassName = 'com.muiz6.attendancesystem.MyApp'
