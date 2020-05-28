@@ -1,4 +1,4 @@
-package com.muiz6.system.attendance.ui;
+package com.muiz6.system.attendance.ui.panel;
 
 import javax.swing.*;
 
@@ -15,7 +15,6 @@ public abstract class NavigatorPanel extends JPanel {
     }
 
     public interface NavigatorInterface {
-
         /**
          *
          * @param id must be a navigator id in Constants class

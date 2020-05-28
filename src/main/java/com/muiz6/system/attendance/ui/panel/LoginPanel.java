@@ -1,4 +1,4 @@
-package com.muiz6.system.attendance.ui;
+package com.muiz6.system.attendance.ui.panel;
 
 import com.muiz6.system.attendance.Constants;
 
@@ -12,12 +12,11 @@ public class LoginPanel extends NavigatorPanel implements ActionListener {
 
     private static final Dimension _MIN_DIMENSION = new Dimension(480, 480);
     private static final String _LOGIN_BTN_TEXT = "Login";
-
     private final JTextField _textId;
     private final JPasswordField _textPassword;
     private final JButton _btnLogin;
 
-    LoginPanel(NavigatorInterface nav) {
+    public LoginPanel(NavigatorInterface nav) {
         super(nav);
 
         this.setSize(_MIN_DIMENSION);

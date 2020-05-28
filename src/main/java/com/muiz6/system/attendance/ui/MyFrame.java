@@ -1,19 +1,20 @@
 package com.muiz6.system.attendance.ui;
 
 import com.muiz6.system.attendance.Constants;
+import com.muiz6.system.attendance.ui.panel.LoginPanel;
+import com.muiz6.system.attendance.ui.panel.NavigatorPanel;
+import com.muiz6.system.attendance.ui.panel.control.ControlPanel;
 
 import javax.swing.*;
 
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
+import java.awt.*;
 
 public class MyFrame extends JFrame
         implements NavigatorPanel.NavigatorInterface {
 
     private static final String _TITLE = "Bedford Portal";
     private static final Dimension _MIN_DIMENSION = new Dimension(800, 600);
-    private JPanel _mainPanel;
-    private NavigatorPanel _loginPanel;
+    private final JPanel _mainPanel;
 
     public MyFrame() {
         this.setTitle(_TITLE);
@@ -25,8 +26,7 @@ public class MyFrame extends JFrame
         _mainPanel.setLayout(new GridBagLayout());
         this.add(_mainPanel);
 
-        _loginPanel = new LoginPanel(this);
-        _mainPanel.add(_loginPanel);
+        _mainPanel.add(new LoginPanel(this));
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     }
 
@@ -35,16 +35,24 @@ public class MyFrame extends JFrame
         switch (id) {
             case Constants.NAVIGATOR_ID_LOGIN_SUCCESSFUL:
                 _mainPanel.removeAll();
-                _mainPanel.add(new ControlPanel(this));
+                final GridBagConstraints constraints = new GridBagConstraints();
+                constraints.weightx = 1;
+                constraints.weighty = 1;
+                constraints.fill = GridBagConstraints.BOTH;
+                _mainPanel.add(new ControlPanel(this), constraints);
                 break;
             case Constants.NAVIGATOR_ID_LOGIN_FAILED:
 
                 // prompt login has failed
                 JOptionPane.showMessageDialog(this, "Login Failed!");
                 break;
+            case Constants.NAVIGATOR_ID_HOME:
+                _mainPanel.removeAll();
+                _mainPanel.add(new LoginPanel(this));
+                break;
         }
 
-        // because panel does not repaint automatically
+        // because panel does not repaint implicitly
         _mainPanel.invalidate();
         _mainPanel.repaint();
         _mainPanel.validate();
