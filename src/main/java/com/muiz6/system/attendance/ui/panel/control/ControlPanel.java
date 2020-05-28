@@ -1,12 +1,16 @@
 package com.muiz6.system.attendance.ui.panel.control;
 
 import com.muiz6.system.attendance.Constants;
+import com.muiz6.system.attendance.ui.Util;
 import com.muiz6.system.attendance.ui.panel.NavigatorPanel;
+import com.muiz6.system.attendance.ui.panel.control.attendance.AttendancePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import static com.muiz6.system.attendance.ui.Util.buildGridBagConstraints;
 
 public class ControlPanel extends NavigatorPanel implements ActionListener {
 
@@ -51,13 +55,13 @@ public class ControlPanel extends NavigatorPanel implements ActionListener {
 
         // add components to panel
         final float hwSide = 0.2f, hwMain = 0.8f;
-        this.add(_btnBack, _buildGridBagConstraints(0,0, hwSide, 0));
-        this.add(title, _buildGridBagConstraints(0, 1, hwMain, 0));
-        this.add(_btnAttendance, _buildGridBagConstraints(1, 0, hwSide, 1));
-        this.add(_btnEmployees, _buildGridBagConstraints(2, 0, hwSide, 1));
-        this.add(_btnHolidays, _buildGridBagConstraints(3, 0, hwSide, 1));
-        this.add(_btnSettings, _buildGridBagConstraints(4, 0, hwSide, 1));
-        final GridBagConstraints gbc = _buildGridBagConstraints(1, 1, hwMain, 1);
+        this.add(_btnBack, Util.buildGridBagConstraints(0,0, hwSide, 0));
+        this.add(title, Util.buildGridBagConstraints(0, 1, hwMain, 0));
+        this.add(_btnAttendance, Util.buildGridBagConstraints(1, 0, hwSide, 1));
+        this.add(_btnEmployees, Util.buildGridBagConstraints(2, 0, hwSide, 1));
+        this.add(_btnHolidays, Util.buildGridBagConstraints(3, 0, hwSide, 1));
+        this.add(_btnSettings, Util.buildGridBagConstraints(4, 0, hwSide, 1));
+        final GridBagConstraints gbc = Util.buildGridBagConstraints(1, 1, hwMain, 1);
         gbc.gridheight = 4;
         this.add(_contentPanel, gbc);
     }
@@ -84,15 +88,5 @@ public class ControlPanel extends NavigatorPanel implements ActionListener {
             final CardLayout layout = (CardLayout) _contentPanel.getLayout();
             layout.show(_contentPanel, _ID_SETTINGS);
         }
-    }
-
-    private GridBagConstraints _buildGridBagConstraints(int row, int col, float weightx, float weighty) {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = row;
-        gbc.gridx = col;
-        gbc.weightx = weightx;
-        gbc.weighty = weighty;
-        gbc.fill = GridBagConstraints.BOTH;
-        return gbc;
     }
 }
