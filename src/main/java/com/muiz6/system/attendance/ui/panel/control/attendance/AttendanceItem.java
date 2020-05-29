@@ -47,6 +47,7 @@ public class AttendanceItem extends JPanel implements ActionListener {
         if (actionEvent.getSource() == _btnPresent) {
             if (_btnPresent.isSelected()) {
                 _btnPresent.setText("P");
+                // TODO: mark present here
             }
             else {
                 final String msg = "Mark Absent of " + _employeeName + "?";
@@ -64,21 +65,4 @@ public class AttendanceItem extends JPanel implements ActionListener {
             }
         }
     }
-
-    // private void _setAttendanceState(boolean state) {
-    //     if (state) {
-    //         _attendanceState = true;
-    //         _btnAbsent.setSelected(false);
-    //         _btnAbsent.setEnabled(true);
-    //         _btnPresent.setSelected(true);
-    //         _btnPresent.setEnabled(false);
-    //     }
-    //     else {
-    //         _attendanceState = false;
-    //         _btnAbsent.setSelected(true);
-    //         _btnAbsent.setEnabled(false);
-    //         _btnPresent.setSelected(false);
-    //         _btnPresent.setEnabled(true);
-    //     }
-    // }
 }

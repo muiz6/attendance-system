@@ -12,7 +12,7 @@ import java.awt.*;
 public class MyFrame extends JFrame
         implements NavigatorPanel.NavigatorInterface {
 
-    private static final String _TITLE = "Bedford Portal";
+    private static final String _TITLE = "Portal";
     private static final Dimension _MIN_DIMENSION = new Dimension(800, 600);
     private final JPanel _mainPanel;
 

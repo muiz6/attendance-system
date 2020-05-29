@@ -4,13 +4,12 @@ import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.ui.Util;
 import com.muiz6.system.attendance.ui.panel.NavigatorPanel;
 import com.muiz6.system.attendance.ui.panel.control.attendance.AttendancePanel;
+import com.muiz6.system.attendance.ui.panel.control.employee.EmployeePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import static com.muiz6.system.attendance.ui.Util.buildGridBagConstraints;
 
 public class ControlPanel extends NavigatorPanel implements ActionListener {
 
