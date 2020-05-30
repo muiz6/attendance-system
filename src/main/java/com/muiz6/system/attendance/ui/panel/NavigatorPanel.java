@@ -15,6 +15,7 @@ public abstract class NavigatorPanel extends JPanel {
     }
 
     public interface NavigatorInterface {
+
         /**
          *
          * @param id must be a navigator id in Constants class

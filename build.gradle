@@ -15,5 +15,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.xerial:sqlite-jdbc:3.30.1'
+    implementation 'com.google.code.gson:gson:2.8.6'
 //    testCompile group: 'junit', name: 'junit', version: '4.12'
 }

@@ -44,14 +44,13 @@ public class LoginPanel extends NavigatorPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         final String enteredPassword = new String(_textPassword.getPassword());
-
-        // TODO: use firebase authentication
-        if (_textId.getText().equals("adnan")
-                && enteredPassword.equals("12345")) {
+        boolean authenticated = LoginController.authenticate(_textId.getText(),
+                enteredPassword);
+        if (authenticated) {
             this.getNavigator().navigate(Constants.NAVIGATOR_ID_LOGIN_SUCCESSFUL);
         }
         else {
-            this.getNavigator() .navigate(Constants.NAVIGATOR_ID_LOGIN_FAILED);
+            this.getNavigator().navigate(Constants.NAVIGATOR_ID_LOGIN_FAILED);
         }
     }
 }
