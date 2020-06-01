@@ -2,7 +2,7 @@ package com.muiz6.system.attendance.ui;
 
 import java.awt.*;
 
-public class Util {
+public class UiUtil {
 
     public static GridBagConstraints buildGridBagConstraints(int row,
             int col, float weightx, float weighty) {

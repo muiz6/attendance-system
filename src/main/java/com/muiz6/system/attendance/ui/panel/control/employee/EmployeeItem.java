@@ -1,6 +1,6 @@
 package com.muiz6.system.attendance.ui.panel.control.employee;
 
-import com.muiz6.system.attendance.ui.Util;
+import com.muiz6.system.attendance.ui.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,14 +32,14 @@ public class EmployeeItem extends JPanel implements ActionListener {
         _btnEdit.addActionListener(this);
 
         // add components
-        this.add(labelName, Util.buildGridBagConstraints(0, 0, 1, 0));
-        this.add(labelId, Util.buildGridBagConstraints(1, 0, 1, 0));
-        this.add(labelJoinDate, Util.buildGridBagConstraints(2, 0, 1, 0));
-        final GridBagConstraints gbcBtnView = Util.buildGridBagConstraints(0, 1, 0, 1);
+        this.add(labelName, UiUtil.buildGridBagConstraints(0, 0, 1, 0));
+        this.add(labelId, UiUtil.buildGridBagConstraints(1, 0, 1, 0));
+        this.add(labelJoinDate, UiUtil.buildGridBagConstraints(2, 0, 1, 0));
+        final GridBagConstraints gbcBtnView = UiUtil.buildGridBagConstraints(0, 1, 0, 1);
         gbcBtnView.gridheight = 3;
         gbcBtnView.fill = GridBagConstraints.BOTH;
         this.add(_btnView, gbcBtnView);
-        final GridBagConstraints gbcBtnEdit = Util.buildGridBagConstraints(0, 2, 0, 1);
+        final GridBagConstraints gbcBtnEdit = UiUtil.buildGridBagConstraints(0, 2, 0, 1);
         gbcBtnEdit.gridheight = 3;
         gbcBtnEdit.fill = GridBagConstraints.BOTH;
         this.add(_btnEdit, gbcBtnEdit);

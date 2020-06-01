@@ -1,21 +1,32 @@
 plugins {
-    id 'java'
+	id 'java'
+	id 'application'
 }
 
 group 'com.muiz6'
 version '0.1'
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+	sourceCompatibility = JavaVersion.VERSION_1_7
+	targetCompatibility = JavaVersion.VERSION_1_7
+}
+
+// change working dir for run task to ./build
+File runningDir = new File('build')
+runningDir.mkdirs()
+tasks.run.workingDir = runningDir
+application {
+	mainClassName = 'com.muiz6.system.attendance.Main'
+	executableDir = 'build'
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 dependencies {
-    implementation 'org.xerial:sqlite-jdbc:3.30.1'
-    implementation 'com.google.code.gson:gson:2.8.6'
-//    testCompile group: 'junit', name: 'junit', version: '4.12'
+	implementation 'org.xerial:sqlite-jdbc:3.30.1'
+	implementation 'com.google.code.gson:gson:2.8.6'
+	// implementation 'com.google.code.findbugs:jsr305:3.0.2'
+	// testCompile group: 'junit', name: 'junit', version: '4.12'
 }

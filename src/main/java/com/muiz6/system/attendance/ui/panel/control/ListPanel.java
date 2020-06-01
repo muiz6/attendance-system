@@ -1,6 +1,6 @@
 package com.muiz6.system.attendance.ui.panel.control;
 
-import com.muiz6.system.attendance.ui.Util;
+import com.muiz6.system.attendance.ui.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,7 @@ public abstract class ListPanel extends JPanel {
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         for (int i = 0; i < this.getItemCount(); i++) {
-            GridBagConstraints gbc = Util.buildGridBagConstraints(i, 0, 1, 0);
+            GridBagConstraints gbc = UiUtil.buildGridBagConstraints(i, 0, 1, 0);
             gbc.insets = new Insets(25, 25, 25, 25);
             _contentPanel.add(this.getItem(i), gbc);
         }

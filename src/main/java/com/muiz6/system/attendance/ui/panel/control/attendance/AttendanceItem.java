@@ -1,7 +1,6 @@
 package com.muiz6.system.attendance.ui.panel.control.attendance;
 
-import com.muiz6.system.attendance.ui.Util;
-import jdk.nashorn.internal.scripts.JO;
+import com.muiz6.system.attendance.ui.UiUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,11 +31,11 @@ public class AttendanceItem extends JPanel implements ActionListener {
         _btnPresent = new JToggleButton("A");
         _btnPresent.addActionListener(this);
 
-        this.add(employeeName, Util.buildGridBagConstraints(0 , 0, 1 , 0));
-        this.add(employeeId, Util.buildGridBagConstraints(1, 0, 1, 0));
-        this.add(employeeTimeIn, Util.buildGridBagConstraints(2, 0, 1, 0));
+        this.add(employeeName, UiUtil.buildGridBagConstraints(0 , 0, 1 , 0));
+        this.add(employeeId, UiUtil.buildGridBagConstraints(1, 0, 1, 0));
+        this.add(employeeTimeIn, UiUtil.buildGridBagConstraints(2, 0, 1, 0));
         GridBagConstraints btnPresentGbc =
-                Util.buildGridBagConstraints(0, 1, 0, 1);
+                UiUtil.buildGridBagConstraints(0, 1, 0, 1);
         btnPresentGbc.gridheight = 3;
         btnPresentGbc.fill = GridBagConstraints.BOTH;
         this.add(_btnPresent, btnPresentGbc);
