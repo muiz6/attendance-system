@@ -1,14 +1,20 @@
 plugins {
 	id 'java'
 	id 'application'
+	id 'org.openjfx.javafxplugin' version '0.0.8'
 }
 
 group 'com.muiz6'
 version '0.1'
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_1_7
-	targetCompatibility = JavaVersion.VERSION_1_7
+	sourceCompatibility = JavaVersion.VERSION_1_8
+	targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+javafx {
+	version = '12'
+	modules = [ 'javafx.controls' ]
 }
 
 // change working dir for run task to ./build
@@ -16,7 +22,7 @@ File runningDir = new File('build')
 runningDir.mkdirs()
 tasks.run.workingDir = runningDir
 application {
-	mainClassName = 'com.muiz6.system.attendance.Main'
+	mainClassName = 'com.muiz6.system.attendance.MyApp'
 	executableDir = 'build'
 }
 

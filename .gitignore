@@ -5,12 +5,13 @@ bin/
 .project
 .classpath
 
+# gradle files
 .gradle/
 build/
+radle-version/
 
 # intellij idea files
 .idea/
-gradle/
 
 # Ignore Gradle GUI config
 gradle-app.setting
