@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane
+	xmlns="http://javafx.com/javafx/10.0.2-internal"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.muiz6.system.attendance.ui.NavigationPanel">
+
+	<left>
+		<VBox
+			fx:id="panel_navigation_vbox"
+			prefHeight="Infinity"
+			prefWidth="250.0"
+			BorderPane.alignment="CENTER">
+
+			<fx:define>
+				<ToggleGroup fx:id="panel_main_toggle_group" />
+			</fx:define>
+
+			<ToggleButton
+				mnemonicParsing="false"
+				selected="true"
+				text="Mark Attendance"
+				toggleGroup="$panel_main_toggle_group"
+				VBox.vgrow="ALWAYS"
+				maxHeight="Infinity"
+				maxWidth="Infinity"/>
+
+			<ToggleButton
+				mnemonicParsing="false"
+				text="Manage Employees"
+				toggleGroup="$panel_main_toggle_group"
+				VBox.vgrow="ALWAYS"
+				maxHeight="Infinity"
+				maxWidth="Infinity"/>
+
+			<ToggleButton
+				mnemonicParsing="false"
+				text="Manage Holidays"
+				toggleGroup="$panel_main_toggle_group"
+				VBox.vgrow="ALWAYS"
+				maxHeight="Infinity"
+				maxWidth="Infinity"/>
+
+		</VBox>
+	</left>
+
+</BorderPane>

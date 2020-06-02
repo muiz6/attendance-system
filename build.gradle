@@ -14,7 +14,7 @@ java {
 
 javafx {
 	version = '12'
-	modules = [ 'javafx.controls' ]
+	modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 // change working dir for run task to ./build
@@ -22,7 +22,7 @@ File runningDir = new File('build')
 runningDir.mkdirs()
 tasks.run.workingDir = runningDir
 application {
-	mainClassName = 'com.muiz6.system.attendance.MyApp'
+	mainClassName = 'com.muiz6.system.attendance.Main'
 	executableDir = 'build'
 }
 
