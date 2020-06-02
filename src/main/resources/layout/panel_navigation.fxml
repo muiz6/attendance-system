@@ -21,29 +21,35 @@
 		</fx:define>
 
 		<TabButton
+			fx:id="_btnAttendance"
 			mnemonicParsing="false"
 			selected="true"
 			text="Mark Attendance"
 			toggleGroup="$panel_main_toggle_group"
 			VBox.vgrow="ALWAYS"
 			maxHeight="Infinity"
-			maxWidth="Infinity"/>
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
 
 		<TabButton
+			fx:id="_btnEmployees"
 			mnemonicParsing="false"
 			text="Manage Employees"
 			toggleGroup="$panel_main_toggle_group"
 			VBox.vgrow="ALWAYS"
 			maxHeight="Infinity"
-			maxWidth="Infinity"/>
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
 
 		<TabButton
+			fx:id="_btnHolidays"
 			mnemonicParsing="false"
 			text="Manage Holidays"
 			toggleGroup="$panel_main_toggle_group"
 			VBox.vgrow="ALWAYS"
 			maxHeight="Infinity"
-			maxWidth="Infinity"/>
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
 
 	</VBox>
 
@@ -54,13 +60,13 @@
 
 	<columnConstraints>
 		<ColumnConstraints
-			hgrow="SOMETIMES"
+			hgrow="ALWAYS"
 			minWidth="150.0"
 			percentWidth="20.0"
 			prefWidth="100.0" />
 
 		<ColumnConstraints
-			hgrow="SOMETIMES"
+			hgrow="ALWAYS"
 			minWidth="10.0"
 			percentWidth="80.0"
 			prefWidth="100.0" />

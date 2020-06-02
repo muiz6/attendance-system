@@ -6,9 +6,11 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<ListView
+<GridPane
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.AttendanceContent">
-	<Label text="Mark Attendance"/>
-</ListView>
+	fx:controller="com.muiz6.system.attendance.ui.EmployeeRow">
+
+	<Label text="employee item"/>
+
+</GridPane>
