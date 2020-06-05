@@ -9,18 +9,10 @@ import java.net.URL;
 
 public abstract class Util {
 
-	// public static HashMap<String, String> readJsonFile(String path)
-	// 		throws java.io.FileNotFoundException {
-	// 	BufferedReader bufferedReader
-	// 			= new BufferedReader(new FileReader(Constants.PATH_TO_SETTING_JSON));
-	// 	Gson gson = new Gson();
-	//
-	// 	// TODO: fix this warning
-	// 	return gson.fromJson(bufferedReader, HashMap.class);
-	// }
-
 	@Nullable
 	public static Node getFxmlNode(String resource) {
+
+		// get gradle resource
 		final URL fxmlResource = ClassLoader.getSystemClassLoader()
 				.getResource(resource);
 		try {
@@ -28,7 +20,7 @@ public abstract class Util {
 			return node;
 		}
 		catch (IOException e) {
-			System.out.println(e.toString());
+			System.out.println(e.getMessage());
 		}
 		return null;
 	}

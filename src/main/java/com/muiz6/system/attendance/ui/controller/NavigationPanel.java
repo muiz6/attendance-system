@@ -1,4 +1,4 @@
-package com.muiz6.system.attendance.ui;
+package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.control.TabButton;

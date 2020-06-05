@@ -7,7 +7,7 @@
 <GridPane
 	xmlns="http://javafx.com/javafx/10.0.2-internal"
 	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.muiz6.system.attendance.ui.NavigationPanel">
+	fx:controller="com.muiz6.system.attendance.ui.controller.NavigationPanel">
 
 	<VBox
 		prefHeight="Infinity"

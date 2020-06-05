@@ -1,16 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <GridPane
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.EmployeeRow">
+	fx:controller="com.muiz6.system.attendance.ui.controller.EmployeeRow"
+	maxWidth="Infinity">
 
-	<Label text="employee item"/>
+	<Label
+		fx:id="_labelName"
+		text="Name: "
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		fx:id="_labelId"
+		text="ID: "
+		GridPane.rowIndex="1"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		fx:id="_labelJoinDate"
+		text="Join Date: "
+		GridPane.rowIndex="2"
+		GridPane.columnIndex="0"/>
+
+	<Button
+		text="View"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="1"
+		GridPane.rowSpan="3"/>
+
+	<Button
+		text="Edit"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="2"
+		GridPane.rowSpan="3"/>
+
+	<columnConstraints>
+		<ColumnConstraints
+			hgrow="ALWAYS"
+			minWidth="50.0"
+			percentWidth="80" />
+
+		<ColumnConstraints
+			minWidth="10.0"
+			percentWidth="10" />
+
+		<ColumnConstraints
+			minWidth="10.0"
+			percentWidth="10" />
+	</columnConstraints>
+
+	<rowConstraints>
+		<RowConstraints
+			minHeight="10.0"
+			prefHeight="30.0"
+			vgrow="SOMETIMES" />
+	</rowConstraints>
 
 </GridPane>
