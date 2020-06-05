@@ -21,8 +21,8 @@ public abstract class Repository {
 			+ "	name tinytext NOT NULL,\n"
 			+ "	join_date bigint NOT NULL\n"
 			+ ");", _TABLE_NAME_EMPLOYEES);
-	private static final String _SQL_CREATE_TABLE_TIME_IN =
-			"CREATE TABLE IF NOT EXISTS time_in (\n"
+	private static final String _SQL_CREATE_TABLE_TIME_IN = MessageFormat
+			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
 			+ "	employee_id tinyint NOT NULL,\n"
 			+ "	monday smallint,\n"
 			+ "	tuesday smallint,\n"
@@ -32,7 +32,7 @@ public abstract class Repository {
 			+ "	saturday smallint,\n"
 			+ "	sunday smallint,\n"
 			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)\n"
-			+ ");";
+			+ ");", _TABLE_NAME_TIME_IN);
 	private static final String _SQL_CREATE_TABLE_TIME_OUT =
 			"CREATE TABLE IF NOT EXISTS time_out (\n"
 			+ "	employee_id tinyint NOT NULL,\n"
@@ -100,15 +100,6 @@ public abstract class Repository {
 		}
 
 		// else
-		// final ArrayList<EmployeeModel> elseList = new ArrayList<>();
-		// for (int i = 0; i < 5; i++) {
-		// 	EmployeeModel model = new EmployeeModel();
-		// 	model.setId((byte) i);
-		// 	model.setName("name "+ i);
-		// 	model.setJoinDate(i);
-		// 	elseList.add(model);
-		// }
-		// return elseList;
 		return new ArrayList<>();
 	}
 }

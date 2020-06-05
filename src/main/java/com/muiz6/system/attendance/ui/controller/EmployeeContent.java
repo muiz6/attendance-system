@@ -31,16 +31,13 @@ public class EmployeeContent implements Initializable {
 
 		_employeeList = Repository.getEmployees();
 
-		for (int i = 0; i < _employeeList.size(); i++) {
+		for (final EmployeeModel model : _employeeList) {
 			try {
 				FXMLLoader loader = new FXMLLoader();
-				EmployeeModel model = _employeeList.get(i);
 				loader.setLocation(fxmlResource);
 				Node node = loader.load();
 				EmployeeRow emp = loader.getController(); // call after loader.load()
-				emp.setId(model.getId());
-				emp.setName(model.getName());
-				emp.setJoinDate(model.getJoinDate());
+				emp.set(model.getId(), model.getName(), model.getJoinDate());
 				_listView.getItems().add(node);
 			}
 			catch (IOException e) {

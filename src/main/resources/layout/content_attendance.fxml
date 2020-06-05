@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ListView?>
 
 <ListView
+	fx:id="_listView"
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.controller.AttendanceContent">
-	<Label text="Mark Attendance"/>
-</ListView>
+	fx:controller="com.muiz6.system.attendance.ui.controller.AttendanceContent"/>
