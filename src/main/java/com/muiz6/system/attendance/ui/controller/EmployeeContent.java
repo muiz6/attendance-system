@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.model.EmployeeModel;
 import javafx.application.Platform;
@@ -27,7 +28,7 @@ public class EmployeeContent implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		final URL fxmlResource = ClassLoader.getSystemClassLoader()
-				.getResource("layout/row_employee.fxml");
+				.getResource(Constants.RES_FXML_ROW_EMPLOYEE);
 
 		_employeeList = Repository.getEmployees();
 

@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import javafx.event.ActionEvent;
@@ -30,7 +31,7 @@ public class NavigationPanel implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		_stackPane.getChildren().add(Util
-				.getFxmlNode("layout/content_attendance.fxml"));
+				.getFxmlNode(Constants.RES_FXML_CONTENT_ATTENDANCE));
 	}
 
 	public void onTabClick(ActionEvent actionEvent) {
@@ -38,17 +39,17 @@ public class NavigationPanel implements Initializable {
 		if (source == _btnAttendance) {
 			_stackPane.getChildren().removeAll();
 			_stackPane.getChildren().add(Util
-					.getFxmlNode("layout/content_attendance.fxml"));
+					.getFxmlNode(Constants.RES_FXML_CONTENT_ATTENDANCE));
 		}
 		else if (source == _btnEmployees) {
 			_stackPane.getChildren().removeAll();
 			_stackPane.getChildren().add(Util
-					.getFxmlNode("layout/content_employees.fxml"));
+					.getFxmlNode(Constants.RES_FXML_CONTENT_EMPLOYEES));
 		}
 		else if(source == _btnHolidays) {
 			_stackPane.getChildren().removeAll();
 			_stackPane.getChildren().add(Util
-					.getFxmlNode("layout/content_holidays.fxml"));
+					.getFxmlNode(Constants.RES_FXML_CONTENT_HOLIDAYS));
 		}
 	}
 }

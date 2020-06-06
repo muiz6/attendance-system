@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Constants;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,7 @@ public class AttendanceRow {
 		_joinDate = joinDate;
 		try {
 			final URL url = ClassLoader.getSystemClassLoader()
-					.getResource("layout/col_employee.fxml");
+					.getResource(Constants.RES_FXML_COL_EMPLOYEE);
 			final FXMLLoader loader = new FXMLLoader(url);
 			final Node node = loader.load();
 			EmployeeColumn empCol = loader.getController();
