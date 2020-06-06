@@ -2,7 +2,10 @@ package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
+import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.EmployeeModel;
+import com.muiz6.system.attendance.ui.ListItemEvent;
+import com.muiz6.system.attendance.ui.Strings;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,40 +16,74 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class EmployeeContent implements Initializable {
+public class EmployeeContent implements Initializable, ListItemEvent {
 
-	private ArrayList<EmployeeModel> _employeeList;
-
+	private final ArrayList<EmployeeModel> _employeeList =
+			Repository.getEmployees();
+	private final Button _addButton = new Button(Strings.ADD_EMPLOYEE_BTN_TEXT);
+	private final Navigation _nav;
 	@FXML
 	private ListView<Node> _listView;
+
+	public EmployeeContent(Navigation nav) {
+		_nav = nav;
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		final URL fxmlResource = ClassLoader.getSystemClassLoader()
 				.getResource(Constants.RES_FXML_ROW_EMPLOYEE);
 
-		_employeeList = Repository.getEmployees();
-
 		for (final EmployeeModel model : _employeeList) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(fxmlResource);
-				Node node = loader.load();
-				EmployeeRow emp = loader.getController(); // call after loader.load()
-				emp.set(model.getId(), model.getName(), model.getJoinDate());
+			// try {
+				// FXMLLoader loader = new FXMLLoader(fxmlResource);
+				// Node node = loader.load();
+				// EmployeeRow emp = loader.getController(); // call after loader.load()
+				// emp.set(this, model.getId(),
+				// 		model.getName(), model.getJoinDate());
+				Node node = Util.getFxmlNode(Constants.RES_FXML_ROW_EMPLOYEE,
+						c -> new EmployeeRow(this,
+								model.getId(),
+								model.getName(),
+								model.getJoinDate()));
 				_listView.getItems().add(node);
-			}
-			catch (IOException e) {
-				System.out.println(e.getMessage());
-			}
+			// }
+			// catch (IOException e) {
+			// 	System.out.println(e.getMessage());
+			// }
 		}
-		Button addButton = new Button("Add");
-		addButton.setMaxWidth(Double.POSITIVE_INFINITY);
-		_listView.getItems().add(addButton);
+		_addButton.setMaxWidth(Double.POSITIVE_INFINITY);
+		_addButton.setOnAction((actionEvent)->{
+
+			// id will be ignored for add btn
+			this.onButtonClick((byte) 0,
+					ListItemEvent.BUTTON_TYPE_ADD_EMPLOYEE);
+		});
+		_listView.getItems().add(_addButton);
+	}
+
+	@Override
+	public void onButtonClick(byte employeeId, int buttonType) {
+		if (buttonType == ListItemEvent.BUTTON_TYPE_VIEW_EMPLOYEE) {
+
+		}
+		else if (buttonType == ListItemEvent.BUTTON_TYPE_EDIT_EMPLOYEE) {
+
+		}
+		else if (buttonType == ListItemEvent.BUTTON_TYPE_ADD_EMPLOYEE) {
+			Node node = Util
+					.getFxmlNode(Constants.RES_FXML_CONTENT_ADD_EMPLOYEE);
+			_nav.show(node);
+		}
+	}
+
+	public interface Navigation {
+		void show(Node content);
 	}
 }

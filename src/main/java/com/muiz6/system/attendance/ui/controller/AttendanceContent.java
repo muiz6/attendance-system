@@ -2,6 +2,7 @@ package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
+import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.EmployeeModel;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,23 +25,30 @@ public class AttendanceContent implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		final URL fxmlResource = ClassLoader.getSystemClassLoader()
-				.getResource(Constants.RES_FXML_ROW_ATTENDANCE);
+		// final URL fxmlResource = ClassLoader.getSystemClassLoader()
+		// 		.getResource(Constants.RES_FXML_ROW_ATTENDANCE);
 
 		_employeeList = Repository.getEmployees();
 
 		for (final EmployeeModel model : _employeeList) {
-			try {
-				FXMLLoader loader = new FXMLLoader();
-				loader.setLocation(fxmlResource);
-				Node node = loader.load();
-				AttendanceRow emp = loader.getController(); // call after loader.load()
-				emp.set(model.getId(), model.getName(), model.getJoinDate());
-				_listView.getItems().add(node);
-			}
-			catch (IOException e) {
-				System.out.println(e.getMessage());
-			}
+			// try {
+			// 	FXMLLoader loader = new FXMLLoader(fxmlResource);
+			// 	Node node = loader.load();
+			// 	AttendanceRow emp = loader.getController(); // call after loader.load()
+			// 	emp.set(model.getId(), model.getName(), model.getJoinDate());
+			// 	_listView.getItems().add(node);
+			//
+			//
+			// }
+			// catch (IOException e) {
+			// 	System.out.println(e.getMessage());
+			// }
+
+			Node node = Util.getFxmlNode(Constants.RES_FXML_ROW_ATTENDANCE,
+					c -> new AttendanceRow(model.getId(),
+							model.getName(),
+							model.getJoinDate()));
+			_listView.getItems().add(node);
 		}
 	}
 }

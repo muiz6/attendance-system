@@ -4,6 +4,7 @@ import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -12,11 +13,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
 import javax.swing.text.html.ListView;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavigationPanel implements Initializable {
+public class NavigationPanel implements Initializable, EmployeeContent.Navigation {
 
 	@FXML
 	private TabButton _btnAttendance;
@@ -44,12 +46,21 @@ public class NavigationPanel implements Initializable {
 		else if (source == _btnEmployees) {
 			_stackPane.getChildren().removeAll();
 			_stackPane.getChildren().add(Util
-					.getFxmlNode(Constants.RES_FXML_CONTENT_EMPLOYEES));
+					.getFxmlNode(Constants.RES_FXML_CONTENT_EMPLOYEES,
+							c -> {
+								return new EmployeeContent(this);
+							}));
 		}
 		else if(source == _btnHolidays) {
 			_stackPane.getChildren().removeAll();
 			_stackPane.getChildren().add(Util
 					.getFxmlNode(Constants.RES_FXML_CONTENT_HOLIDAYS));
 		}
+	}
+
+	@Override
+	public void show(Node content) {
+		_stackPane.getChildren().removeAll();
+		_stackPane.getChildren().add(content);
 	}
 }

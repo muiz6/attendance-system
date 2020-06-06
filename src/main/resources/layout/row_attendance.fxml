@@ -4,10 +4,27 @@
 <?import javafx.scene.layout.*?>
 
 <GridPane
-	fx:id="_gridPane"
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
 	fx:controller="com.muiz6.system.attendance.ui.controller.AttendanceRow">
+
+	<Label
+		fx:id="_labelName"
+		text="Name: "
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		fx:id="_labelId"
+		text="ID: "
+		GridPane.rowIndex="1"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		fx:id="_labelJoinDate"
+		text="Join Date: "
+		GridPane.rowIndex="2"
+		GridPane.columnIndex="0"/>
 
 	<ToggleButton
 		fx:id="_btnAttendance"
