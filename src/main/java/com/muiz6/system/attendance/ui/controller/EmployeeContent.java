@@ -21,11 +21,11 @@ public class EmployeeContent implements Initializable, ListItemEvent {
 	private final ArrayList<EmployeeModel> _employeeList =
 			Repository.getEmployees();
 	private final Button _addButton = new Button(Strings.ADD_EMPLOYEE_BTN_TEXT);
-	private final Navigation _nav;
+	private final NavigationHandler _nav;
 	@FXML
 	private ListView<Node> _listView;
 
-	public EmployeeContent(Navigation nav) {
+	public EmployeeContent(NavigationHandler nav) {
 		_nav = nav;
 	}
 
@@ -64,7 +64,7 @@ public class EmployeeContent implements Initializable, ListItemEvent {
 		}
 	}
 
-	public interface Navigation {
+	public interface NavigationHandler {
 		void show(Node content);
 	}
 }

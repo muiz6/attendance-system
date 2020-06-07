@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class NavigationPanel implements Initializable,
-		EmployeeContent.Navigation {
+		EmployeeContent.NavigationHandler {
 
 	@FXML
 	private TabButton _btnAttendance;
