@@ -1,6 +1,5 @@
 package com.muiz6.system.attendance;
 
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.util.Callback;

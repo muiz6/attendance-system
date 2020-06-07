@@ -51,16 +51,23 @@ public class EmployeeContent implements Initializable, ListItemEvent {
 
 	@Override
 	public void onButtonClick(byte employeeId, int buttonType) {
-		if (buttonType == ListItemEvent.BUTTON_TYPE_VIEW_EMPLOYEE) {
+		switch (buttonType) {
+			case ListItemEvent.BUTTON_TYPE_VIEW_EMPLOYEE:
+				_nav.show(Util
+						.getFxmlNode(Constants.RES_FXML_CONTENT_VIEW_EMPLOYEE,
+								c -> new ViewEmployeeContent(employeeId)));
+				break;
 
-		}
-		else if (buttonType == ListItemEvent.BUTTON_TYPE_EDIT_EMPLOYEE) {
+			case ListItemEvent.BUTTON_TYPE_EDIT_EMPLOYEE:
+				_nav.show(Util
+						.getFxmlNode(Constants.RES_FXML_CONTENT_EDIT_EMPLOYEE,
+								c -> new EditEmployeeContent(employeeId)));
+				break;
 
-		}
-		else if (buttonType == ListItemEvent.BUTTON_TYPE_ADD_EMPLOYEE) {
-			Node node = Util
-					.getFxmlNode(Constants.RES_FXML_CONTENT_ADD_EMPLOYEE);
-			_nav.show(node);
+			case ListItemEvent.BUTTON_TYPE_ADD_EMPLOYEE:
+				_nav.show(Util
+						.getFxmlNode(Constants.RES_FXML_CONTENT_ADD_EMPLOYEE));
+				break;
 		}
 	}
 
