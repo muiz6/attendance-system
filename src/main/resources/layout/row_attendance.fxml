@@ -45,11 +45,4 @@
 			percentWidth="10" />
 	</columnConstraints>
 
-	<rowConstraints>
-		<RowConstraints
-			minHeight="10.0"
-			prefHeight="55.0"
-			vgrow="SOMETIMES" />
-	</rowConstraints>
-
 </GridPane>

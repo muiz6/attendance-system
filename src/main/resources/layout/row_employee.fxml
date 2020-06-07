@@ -32,6 +32,7 @@
 		text="View"
 		GridPane.rowIndex="0"
 		GridPane.columnIndex="1"
+		GridPane.rowSpan="3"
 		onAction="#onBtnClick"/>
 
 	<Button
@@ -39,6 +40,7 @@
 		text="Edit"
 		GridPane.rowIndex="0"
 		GridPane.columnIndex="2"
+		GridPane.rowSpan="3"
 		onAction="#onBtnClick"/>
 
 	<columnConstraints>
@@ -55,12 +57,5 @@
 			minWidth="10.0"
 			percentWidth="10" />
 	</columnConstraints>
-
-	<rowConstraints>
-		<RowConstraints
-			minHeight="10.0"
-			prefHeight="55.0"
-			vgrow="SOMETIMES" />
-	</rowConstraints>
 
 </GridPane>
