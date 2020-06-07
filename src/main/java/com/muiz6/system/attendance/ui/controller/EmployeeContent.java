@@ -5,6 +5,7 @@ import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.EmployeeModel;
 import com.muiz6.system.attendance.ui.ListItemEvent;
+import com.muiz6.system.attendance.ui.NavigationHandler;
 import com.muiz6.system.attendance.ui.Strings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -66,12 +67,9 @@ public class EmployeeContent implements Initializable, ListItemEvent {
 
 			case ListItemEvent.BUTTON_TYPE_ADD_EMPLOYEE:
 				_nav.show(Util
-						.getFxmlNode(Constants.RES_FXML_CONTENT_ADD_EMPLOYEE));
+						.getFxmlNode(Constants.RES_FXML_CONTENT_ADD_EMPLOYEE,
+								c -> new AddEmployeeContent(_nav)));
 				break;
 		}
-	}
-
-	public interface NavigationHandler {
-		void show(Node content);
 	}
 }

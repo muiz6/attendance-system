@@ -3,30 +3,52 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import java.lang.String?>
+
 <GridPane
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
 	fx:controller="com.muiz6.system.attendance.ui.controller.AddEmployeeContent"
 	alignment="CENTER">
 
+<!--	re usable objects-->
+	<fx:define>
+		<ToggleGroup fx:id="toggle_group"/>
+		<Text fx:id="text_btn_time_default"
+			text="12:00 am"/>
+		<Text fx:id="text_btn_time_default_holiday"
+			text="Holiday"/>
+	</fx:define>
+
+	<Button
+		fx:id="_btnBack"
+		text="Back"
+		onAction="#onBtnClick"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="0"/>
+
 	<Label
 		text = "Add Employee"
 		GridPane.rowIndex="0"
-		GridPane.columnIndex="0"
-		GridPane.halignment="CENTER"/>
+		GridPane.columnIndex="1"
+		GridPane.halignment="CENTER">
+		<padding>
+			<Insets top="15"/>
+		</padding>
+	</Label>
 
 	<VBox
 		GridPane.rowIndex="1"
 		GridPane.columnIndex="0"
-		alignment="CENTER">
+		alignment="CENTER"
+		spacing="15"
+		GridPane.columnSpan="2">
 
 		<TextField
 			promptText="Enter Name"
 			maxWidth="300"/>
-
-		<fx:define>
-			<ToggleGroup fx:id="toggle_group"/>
-		</fx:define>
 
 		<RadioButton
 			fx:id="_btnRadioSame"
@@ -35,9 +57,40 @@
 			text="Same Timing (Default Holidays)"
 			onAction="#onOptionSelect"/>
 
-		<Button
-			fx:id="_btnTimeSame"
-			text="12:00 am" />
+		<GridPane
+			vgap="10"
+			maxWidth="300">
+
+			<Label
+				text="Time In"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInSame"
+				text="${text_btn_time_default.text}"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="0"/>
+
+			<Label
+				text="Time Out"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="1"/>
+			<Button
+				fx:id="_btnTimeOutSame"
+				text="${text_btn_time_default.text}"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="1"/>
+
+			<columnConstraints>
+				<ColumnConstraints
+					hgrow="ALWAYS"
+					halignment="CENTER"/>
+				<ColumnConstraints
+					hgrow="ALWAYS"
+					halignment="CENTER"/>
+			</columnConstraints>
+
+		</GridPane>
 
 		<RadioButton
 			fx:id="_btnRadioDifferent"
@@ -46,86 +99,139 @@
 			onAction="#onOptionSelect"/>
 
 		<GridPane
-			maxWidth="300">
+			maxWidth="300"
+			vgap="10">
+
+			<Label
+				text="Time In"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="1"/>
+			<Label
+				text="Time Out"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="2"/>
+
 			<Label
 				text="Monday"
-				GridPane.rowIndex="0"
-				GridPane.columnIndex="0"/>
-			<Button
-				fx:id="_btnTimeMonday"
-				text="12:00 am"
-				disable="true"
 				GridPane.rowIndex="1"
 				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInMonday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="1"/>
+			<Button
+				fx:id="_btnTimeOutMonday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="2"/>
 
 			<Label text="Tuesday"
-				GridPane.rowIndex="0"
+				GridPane.rowIndex="2"
+				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInTuesday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="2"
 				GridPane.columnIndex="1"/>
 			<Button
-				fx:id="_btnTimeTuesday"
-				text="12:00 am"
+				fx:id="_btnTimeOutTuesday"
+				text="${text_btn_time_default.text}"
 				disable="true"
-				GridPane.rowIndex="1"
-				GridPane.columnIndex="1"/>
+				GridPane.rowIndex="2"
+				GridPane.columnIndex="2"/>
 
 			<Label
 				text="Wednesday"
-				GridPane.rowIndex="2"
-				GridPane.columnIndex="0"/>
-			<Button
-				fx:id="_btnTimeWednesday"
-				text="12:00 am"
-				disable="true"
 				GridPane.rowIndex="3"
 				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInWednesday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="3"
+				GridPane.columnIndex="1"/>
+			<Button
+				fx:id="_btnTimeOutWednesday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="3"
+				GridPane.columnIndex="2"/>
 
 			<Label
 				text="Thursday"
-				GridPane.rowIndex="2"
+				GridPane.rowIndex="4"
+				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInThursday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="4"
 				GridPane.columnIndex="1"/>
 			<Button
-				fx:id="_btnTimeThursday"
-				text="12:00 am"
+				fx:id="_btnTimeOutThursday"
+				text="${text_btn_time_default.text}"
 				disable="true"
-				GridPane.rowIndex="3"
-				GridPane.columnIndex="1"/>
+				GridPane.rowIndex="4"
+				GridPane.columnIndex="2"/>
 
 			<Label
 				text="Friday"
-				GridPane.rowIndex="4"
-				GridPane.columnIndex="0"/>
-			<Button
-				fx:id="_btnTimeFriday"
-				text="12:00 am"
-				disable="true"
 				GridPane.rowIndex="5"
 				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInFriday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="5"
+				GridPane.columnIndex="1"/>
+			<Button
+				fx:id="_btnTimeOutFriday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="5"
+				GridPane.columnIndex="2"/>
 
 			<Label
 				text="Saturday"
-				GridPane.rowIndex="4"
+				GridPane.rowIndex="6"
+				GridPane.columnIndex="0"/>
+			<Button
+				fx:id="_btnTimeInSaturday"
+				text="${text_btn_time_default.text}"
+				disable="true"
+				GridPane.rowIndex="6"
 				GridPane.columnIndex="1"/>
 			<Button
-				fx:id="_btnTimeSaturday"
-				text="12:00 am"
+				fx:id="_btnTimeOutSaturday"
+				text="${text_btn_time_default.text}"
 				disable="true"
-				GridPane.rowIndex="5"
-				GridPane.columnIndex="1"/>
+				GridPane.rowIndex="6"
+				GridPane.columnIndex="2"/>
 
 			<Label
 				text="Sunday"
-				GridPane.rowIndex="6"
-				GridPane.columnIndex="0"
-				GridPane.columnSpan="2"/>
+				GridPane.rowIndex="7"
+				GridPane.columnIndex="0"/>
 			<Button
-				fx:id="_btnTimeSunday"
-				text="12:00 am"
+				fx:id="_btnTimeInSunday"
+				text="${text_btn_time_default_holiday.text}"
 				disable="true"
 				GridPane.rowIndex="7"
-				GridPane.columnIndex="0"
-				GridPane.columnSpan="2"/>
+				GridPane.columnIndex="1"/>
+			<Button
+				fx:id="_btnTimeOutSunday"
+				text="${text_btn_time_default_holiday.text}"
+				disable="true"
+				GridPane.rowIndex="7"
+				GridPane.columnIndex="2"/>
 
 			<columnConstraints>
+				<ColumnConstraints
+					hgrow="ALWAYS"/>
 				<ColumnConstraints
 					hgrow="ALWAYS"
 					halignment="CENTER"/>
@@ -144,6 +250,7 @@
 	</VBox>
 
 	<columnConstraints>
+		<ColumnConstraints/>
 		<ColumnConstraints
 			maxWidth="Infinity"
 			hgrow="ALWAYS"/>

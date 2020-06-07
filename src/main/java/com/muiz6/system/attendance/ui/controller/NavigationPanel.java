@@ -2,6 +2,7 @@ package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
+import com.muiz6.system.attendance.ui.NavigationHandler;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,8 +13,7 @@ import javafx.scene.layout.StackPane;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavigationPanel implements Initializable,
-		EmployeeContent.NavigationHandler {
+public class NavigationPanel implements Initializable, NavigationHandler {
 
 	@FXML
 	private TabButton _btnAttendance;
