@@ -2,7 +2,6 @@ package com.muiz6.system.attendance;
 
 import com.muiz6.system.attendance.model.EmployeeModel;
 
-import javax.annotation.Nullable;
 import java.sql.*;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -14,7 +13,8 @@ public abstract class Repository {
 	private static final String _TABLE_NAME_TIME_IN = "time-in";
 	private static final String _TABLE_NAME_TIME_OUT = "time-out";
 	private static final String _TABLE_NAME_ATTENDANCE = "attendance";
-	private static final String _TABLE_NAME_HOLIDAYS = "holidays";
+	private static final String _TABLE_NAME_HOLIDAY_DAY = "holiday-days";
+	private static final String _TABLE_NAME_HOLIDAY_DATE = "holiday-date";
 	private static final String _SQL_CREATE_TABLE_EMPLOYEES = MessageFormat
 			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
 			+ "	id tinyint IDENTITY(0, 1) PRIMARY KEY,\n"
@@ -33,8 +33,8 @@ public abstract class Repository {
 			+ "	sunday smallint,\n"
 			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)\n"
 			+ ");", _TABLE_NAME_TIME_IN);
-	private static final String _SQL_CREATE_TABLE_TIME_OUT =
-			"CREATE TABLE IF NOT EXISTS time_out (\n"
+	private static final String _SQL_CREATE_TABLE_TIME_OUT = MessageFormat
+			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
 			+ "	employee_id tinyint NOT NULL,\n"
 			+ "	monday smallint,\n"
 			+ "	tuesday smallint,\n"
@@ -44,16 +44,21 @@ public abstract class Repository {
 			+ "	saturday smallint,\n"
 			+ "	sunday smallint,\n"
 			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)\n"
-			+ ");";
-	private static final String _SQL_CREATE_TABLE_HOLIDAY_DAY =
-			"CREATE TABLE IF NOT EXISTS holiday_day (\n"
+			+ ");", _TABLE_NAME_TIME_OUT);
+	private static final String _SQL_CREATE_TABLE_ATTENDANCE = MessageFormat
+			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
+			+ " employee_id tinyint NOT NULL,\n"
+			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)"
+			+ ");", _TABLE_NAME_ATTENDANCE);
+	private static final String _SQL_CREATE_TABLE_HOLIDAY_DAY = MessageFormat
+			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
 			+ "	day tinytext PRIMARY KEY,\n"
 			+ "	value bit NOT NULL\n"
-			+ ");";
-	private static final String _SQL_CREATE_TABLE_HOLIDAY_DATE =
-			"CREATE TABLE IF NOT EXISTS holiday_date (\n"
+			+ ");", _TABLE_NAME_HOLIDAY_DAY);
+	private static final String _SQL_CREATE_TABLE_HOLIDAY_DATE = MessageFormat
+			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
 			+ "	date bigint PRIMARY KEY\n"
-			+ ");";
+			+ ");", _TABLE_NAME_HOLIDAY_DATE);
 
 	public static void initializeDataBase() {
 		final String url = _PATH_TO_DATA_BASE;
@@ -66,6 +71,7 @@ public abstract class Repository {
 			stmt.execute(_SQL_CREATE_TABLE_EMPLOYEES);
 			stmt.execute(_SQL_CREATE_TABLE_TIME_IN);
 			stmt.execute(_SQL_CREATE_TABLE_TIME_OUT);
+			stmt.execute(_SQL_CREATE_TABLE_ATTENDANCE);
 			stmt.execute(_SQL_CREATE_TABLE_HOLIDAY_DAY);
 			stmt.execute(_SQL_CREATE_TABLE_HOLIDAY_DATE);
 		}
