@@ -4,21 +4,16 @@ import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 
-import javax.swing.text.html.ListView;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavigationPanel implements Initializable, EmployeeContent.Navigation {
+public class NavigationPanel implements Initializable,
+		EmployeeContent.Navigation {
 
 	@FXML
 	private TabButton _btnAttendance;
@@ -32,35 +27,34 @@ public class NavigationPanel implements Initializable, EmployeeContent.Navigatio
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
+		// start by content of first tab (attendance tab)
 		_stackPane.getChildren().add(Util
 				.getFxmlNode(Constants.RES_FXML_CONTENT_ATTENDANCE));
+	}
+
+	@Override
+	public void show(Node content) {
+		_stackPane.getChildren().clear();
+		_stackPane.getChildren().add(content);
 	}
 
 	public void onTabClick(ActionEvent actionEvent) {
 		Object source = actionEvent.getSource();
 		if (source == _btnAttendance) {
-			_stackPane.getChildren().removeAll();
+			_stackPane.getChildren().clear();
 			_stackPane.getChildren().add(Util
 					.getFxmlNode(Constants.RES_FXML_CONTENT_ATTENDANCE));
 		}
 		else if (source == _btnEmployees) {
-			_stackPane.getChildren().removeAll();
+			_stackPane.getChildren().clear();
 			_stackPane.getChildren().add(Util
 					.getFxmlNode(Constants.RES_FXML_CONTENT_EMPLOYEES,
-							c -> {
-								return new EmployeeContent(this);
-							}));
+							c -> new EmployeeContent(this)));
 		}
 		else if(source == _btnHolidays) {
-			_stackPane.getChildren().removeAll();
+			_stackPane.getChildren().clear();
 			_stackPane.getChildren().add(Util
 					.getFxmlNode(Constants.RES_FXML_CONTENT_HOLIDAYS));
 		}
-	}
-
-	@Override
-	public void show(Node content) {
-		_stackPane.getChildren().removeAll();
-		_stackPane.getChildren().add(content);
 	}
 }
