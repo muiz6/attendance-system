@@ -1,8 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
-import com.muiz6.system.attendance.Constants;
-import com.muiz6.system.attendance.Util;
-import com.muiz6.system.attendance.ui.NavigationHandler;
+import com.muiz6.system.attendance.ui.EmployeeItemEvent;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,7 +8,6 @@ import javafx.scene.control.RadioButton;
 
 public class AddEmployeeContent {
 
-	private final NavigationHandler _nav;
 	@FXML
 	private Button _btnBack;
 	@FXML
@@ -50,10 +47,6 @@ public class AddEmployeeContent {
 	@FXML
 	private RadioButton _btnRadioSame;
 
-	public AddEmployeeContent(NavigationHandler nav) {
-		_nav = nav;
-	}
-
 	public void onOptionSelect(ActionEvent event) {
 		Button[] arr = {
 				_btnTimeInMonday,
@@ -91,8 +84,10 @@ public class AddEmployeeContent {
 	public void onBtnClick(ActionEvent actionEvent) {
 		Object source = actionEvent.getSource();
 		if (source == _btnBack) {
-			_nav.show(Util.getFxmlNode(Constants.RES_FXML_CONTENT_EMPLOYEES,
-					c -> new EmployeeContent(_nav)));
+
+			// id will be ignored for back btn
+			_btnBack.fireEvent(new EmployeeItemEvent((byte) 0,
+					EmployeeItemEvent.BUTTON_TYPE_BACK));
 		}
 	}
 }

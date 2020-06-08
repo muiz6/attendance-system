@@ -5,7 +5,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.text.Text?>
-<?import java.lang.String?>
 
 <GridPane
 	xmlns="http://javafx.com/javafx"
@@ -47,7 +46,7 @@
 		GridPane.columnSpan="2">
 
 		<TextField
-			promptText="Enter Name"
+			promptText="Enter Employee Name"
 			maxWidth="300"/>
 
 		<RadioButton
