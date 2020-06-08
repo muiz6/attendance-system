@@ -18,4 +18,6 @@ public class Constants {
 			"layout/row_employee.fxml";
 	public static final String RES_FXML_ROW_ATTENDANCE =
 			"layout/row_attendance.fxml";
+	public static final String RES_FXML_TIME_PICKER =
+			"layout/time_picker.fxml";
 }
