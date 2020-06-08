@@ -62,18 +62,21 @@ public class NavigationPanel implements Initializable,
 				_stackPane.getChildren().add(Util.getFxmlNode(Constants
 						.RES_FXML_CONTENT_ADD_EMPLOYEE));
 				break;
+
 			case EmployeeItemEvent.BUTTON_TYPE_VIEW_EMPLOYEE:
 				_stackPane.getChildren().clear();
 				_stackPane.getChildren().add(Util.getFxmlNode(Constants
 						.RES_FXML_CONTENT_VIEW_EMPLOYEE,
 						c -> new ViewEmployeeContent(employeeId)));
 				break;
+
 			case EmployeeItemEvent.BUTTON_TYPE_EDIT_EMPLOYEE:
 				_stackPane.getChildren().clear();
 				_stackPane.getChildren().add(Util.getFxmlNode(Constants
 						.RES_FXML_CONTENT_EDIT_EMPLOYEE,
 						c -> new EditEmployeeContent(employeeId)));
 				break;
+
 			case EmployeeItemEvent.BUTTON_TYPE_BACK:
 				_stackPane.getChildren().clear();
 				_stackPane.getChildren().add(Util.getFxmlNode(Constants

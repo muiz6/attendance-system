@@ -56,6 +56,7 @@ public class AttendanceRow implements Initializable {
 					ButtonType.NO,
 					ButtonType.YES);
 			alert.setTitle("Mark Absent");
+			alert.setHeaderText(null);
 			alert.showAndWait();
 
 			if (alert.getResult() == ButtonType.YES) {
