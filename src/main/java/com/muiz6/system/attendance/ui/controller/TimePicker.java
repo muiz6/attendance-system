@@ -72,8 +72,11 @@ public class TimePicker implements Initializable {
 						.getSelectedItem();
 				final String period = _comboBoxPeriod.getSelectionModel()
 						.getSelectedItem();
-				if (period.equals("pm") && h < 12) {
-					h += 12;
+				if (period.equals("am")) {
+					h %= 12;
+				}
+				else { // period is pm
+					h = h % 12 + 12;
 				}
 				short timeInMinutes = (short) (h * 60 + m);
 				_dialog.setResult(timeInMinutes);
@@ -84,8 +87,9 @@ public class TimePicker implements Initializable {
 
 	public void setTime(short timeInMinutes) {
 		int h = timeInMinutes / 60;
-		if (h > 12) {
-			h %= 12;
+		h %= 12;
+		if (h == 0) {
+			h = 12;
 		}
 		final int indexM = timeInMinutes % 60;
 		_comboBoxHour.getSelectionModel().select(h - 1);
