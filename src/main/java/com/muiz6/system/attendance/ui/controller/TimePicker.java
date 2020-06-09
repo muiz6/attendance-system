@@ -72,7 +72,7 @@ public class TimePicker implements Initializable {
 						.getSelectedItem();
 				final String period = _comboBoxPeriod.getSelectionModel()
 						.getSelectedItem();
-				if (period.equals("pm")) {
+				if (period.equals("pm") && h < 12) {
 					h += 12;
 				}
 				short timeInMinutes = (short) (h * 60 + m);
@@ -80,5 +80,26 @@ public class TimePicker implements Initializable {
 			}
 			_dialog.close();
 		}
+	}
+
+	public void setTime(short timeInMinutes) {
+		int h = timeInMinutes / 60;
+		h %= 13;
+		if (h == 0) {
+			h = 12;
+		}
+		final int indexM = timeInMinutes % 60;
+		_comboBoxHour.getSelectionModel().select(h - 1);
+		_comboBoxMinute.getSelectionModel().select(indexM);
+		if (timeInMinutes >= 720) {
+			_comboBoxPeriod.getSelectionModel().selectLast();
+		}
+		else {
+			_comboBoxPeriod.getSelectionModel().selectFirst();
+		}
+	}
+
+	public void disableHolidayCheckbox(boolean state) {
+		_checkBoxMarkHoliday.setDisable(state);
 	}
 }
