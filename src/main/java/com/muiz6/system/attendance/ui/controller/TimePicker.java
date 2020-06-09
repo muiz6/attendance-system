@@ -84,9 +84,8 @@ public class TimePicker implements Initializable {
 
 	public void setTime(short timeInMinutes) {
 		int h = timeInMinutes / 60;
-		h %= 13;
-		if (h == 0) {
-			h = 12;
+		if (h > 12) {
+			h %= 12;
 		}
 		final int indexM = timeInMinutes % 60;
 		_comboBoxHour.getSelectionModel().select(h - 1);
