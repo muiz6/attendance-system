@@ -4,6 +4,7 @@ public class EmployeeModel {
 	byte _id;
 	String _name;
 	long _joinDate;
+	boolean _isActive;
 
 	public byte getId() {
 		return _id;
@@ -27,5 +28,13 @@ public class EmployeeModel {
 
 	public void setJoinDate(long joinDate) {
 		_joinDate = joinDate;
+	}
+
+	public void setActive(boolean state) {
+		_isActive = state;
+	}
+
+	public boolean isActive() {
+		return _isActive;
 	}
 }
