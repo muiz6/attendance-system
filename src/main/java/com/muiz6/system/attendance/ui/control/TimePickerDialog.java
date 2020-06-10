@@ -31,4 +31,8 @@ public class TimePickerDialog extends Dialog<Short> {
 	public void disableHolidayCheckbox(boolean state) {
 		_controller.disableHolidayCheckbox(state);
 	}
+
+	public void setHolidayCheckboxSelected(boolean state) {
+		_controller.setHolidayCheckboxSelected(state);
+	}
 }

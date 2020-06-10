@@ -105,4 +105,9 @@ public class TimePicker implements Initializable {
 	public void disableHolidayCheckbox(boolean state) {
 		_checkBoxMarkHoliday.setDisable(state);
 	}
+
+	public void setHolidayCheckboxSelected(boolean state) {
+		_checkBoxMarkHoliday.setSelected(state);
+		_checkBoxMarkHoliday.fireEvent(new ActionEvent());
+	}
 }
