@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+
+<GridPane
+	xmlns="http://javafx.com/javafx"
+	xmlns:fx="http://javafx.com/fxml"
+	fx:controller="com.muiz6.system.attendance.ui.controller.TimePicker"
+	vgap="15">
+
+	<Label
+		text="hour"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		text="minute"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="1"/>
+
+	<Label
+		text="period"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="2"/>
+
+	<ComboBox
+		fx:id="_comboBoxHour"
+		promptText="hh"
+		GridPane.rowIndex="1"
+		GridPane.columnIndex="0">
+		<items>
+			<FXCollections fx:factory="observableArrayList"/>
+		</items>
+	</ComboBox>
+
+	<ComboBox
+		fx:id="_comboBoxMinute"
+		promptText="mm"
+		GridPane.rowIndex="1"
+		GridPane.columnIndex="1">
+		<items>
+			<FXCollections
+				fx:factory="observableArrayList"/>
+		</items>
+	</ComboBox>
+
+	<ComboBox
+		fx:id="_comboBoxPeriod"
+		GridPane.rowIndex="1"
+		GridPane.columnIndex="2">
+		<items>
+			<FXCollections
+				fx:factory="observableArrayList">
+				<String fx:value="am"/>
+				<String fx:value="pm"/>
+			</FXCollections>
+		</items>
+	</ComboBox>
+
+	<CheckBox
+		fx:id="_checkBoxMarkHoliday"
+		text="Mark Holiday"
+		onAction="#onCheckBoxClick"
+		GridPane.rowIndex="2"
+		GridPane.columnIndex="0"
+		GridPane.columnSpan="3"/>
+
+	<Button
+		fx:id="_btnOk"
+		text="OK"
+		prefWidth="100"
+		GridPane.rowIndex="3"
+		GridPane.columnIndex="0"
+		GridPane.columnSpan="3"
+		onAction="#onButtonClick"/>
+
+	<columnConstraints>
+		<ColumnConstraints
+			halignment="CENTER"/>
+		<ColumnConstraints
+			halignment="CENTER"/>
+		<ColumnConstraints
+			halignment="CENTER"/>
+	</columnConstraints>
+
+</GridPane>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import com.muiz6.system.attendance.ui.control.TabButton?>
+
+<GridPane
+	xmlns="http://javafx.com/javafx/10.0.2-internal"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.muiz6.system.attendance.ui.controller.NavigationPanel">
+
+	<VBox
+		prefHeight="Infinity"
+		prefWidth="250.0"
+		BorderPane.alignment="CENTER"
+		GridPane.columnIndex="0"
+		GridPane.rowIndex="0">
+
+		<fx:define>
+			<ToggleGroup fx:id="panel_main_toggle_group" />
+		</fx:define>
+
+		<TabButton
+			fx:id="_btnAttendance"
+			mnemonicParsing="false"
+			selected="true"
+			text="Mark Attendance"
+			toggleGroup="$panel_main_toggle_group"
+			VBox.vgrow="ALWAYS"
+			maxHeight="Infinity"
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
+
+		<TabButton
+			fx:id="_btnEmployees"
+			mnemonicParsing="false"
+			text="Manage Employees"
+			toggleGroup="$panel_main_toggle_group"
+			VBox.vgrow="ALWAYS"
+			maxHeight="Infinity"
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
+
+		<TabButton
+			fx:id="_btnHolidays"
+			mnemonicParsing="false"
+			text="Manage Holidays"
+			toggleGroup="$panel_main_toggle_group"
+			VBox.vgrow="ALWAYS"
+			maxHeight="Infinity"
+			maxWidth="Infinity"
+			onAction="#onTabClick"/>
+
+	</VBox>
+
+	<StackPane
+		fx:id="_stackPane"
+		GridPane.columnIndex="1"
+		GridPane.rowIndex="0"/>
+
+	<columnConstraints>
+		<ColumnConstraints
+			hgrow="ALWAYS"
+			minWidth="150.0"
+			percentWidth="20.0"
+			prefWidth="100.0" />
+
+		<ColumnConstraints
+			hgrow="ALWAYS"
+			minWidth="10.0"
+			percentWidth="80.0"
+			prefWidth="100.0" />
+	</columnConstraints>
+
+	<rowConstraints>
+		<RowConstraints
+			minHeight="10.0"
+			prefHeight="30.0"
+			vgrow="ALWAYS" />
+	</rowConstraints>
+
+</GridPane>

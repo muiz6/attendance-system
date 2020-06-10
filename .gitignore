@@ -1,5 +1,17 @@
-.gradle
-/build/
+.vscode
+
+bin/
+.settings
+.project
+.classpath
+
+# gradle files
+.gradle/
+build/
+radle-version/
+
+# intellij idea files
+.idea/
 
 # Ignore Gradle GUI config
 gradle-app.setting
