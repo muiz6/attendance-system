@@ -63,7 +63,7 @@ public class TimePicker implements Initializable {
 	public void onButtonClick(ActionEvent actionEvent) {
 		if (actionEvent.getSource() == _btnOk) {
 			if (_checkBoxMarkHoliday.isSelected()) {
-				_dialog.setResult((short) -1);
+				_dialog.setResult((short) -1); // holiday state
 			}
 			else {
 				int h = _comboBoxHour.getSelectionModel()
