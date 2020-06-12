@@ -1,93 +1,182 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.ui.EmployeeItemEvent;
+import com.muiz6.system.attendance.ui.Strings;
+import com.muiz6.system.attendance.ui.control.DatePickerDialog;
+import com.muiz6.system.attendance.ui.control.TimePickerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 
-public class AddEmployeeContent {
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class AddEmployeeContent implements Initializable {
 
 	@FXML
 	private Button _btnBack;
 	@FXML
-	private Button _btnTimeInSame;
+	private Button _btnAdd;
 	@FXML
-	private Button _btnTimeOutSame;
+	private TextField _textTimeTuesday;
 	@FXML
-	private Button _btnTimeInMonday;
+	private TextField _textTimeMonday;
 	@FXML
-	private Button _btnTimeOutMonday;
+	private TextField _textTimeWednesday;
 	@FXML
-	private Button _btnTimeInTuesday;
+	private TextField _textTImeThursday;
 	@FXML
-	private Button _btnTimeOutTuesday;
+	private TextField _textTimeSunday;
 	@FXML
-	private Button _btnTimeInWednesday;
+	private TextField _textTimeSaturday;
 	@FXML
-	private Button _btnTimeOutWednesday;
+	private TextField _textTimeFriday;
 	@FXML
-	private Button _btnTimeInThursday;
-	@FXML
-	private Button _btnTimeOutThursday;
-	@FXML
-	private Button _btnTimeInFriday;
-	@FXML
-	private Button _btnTimeOutFriday;
-	@FXML
-	private Button _btnTimeInSaturday;
-	@FXML
-	private Button _btnTimeOutSaturday;
-	@FXML
-	private Button _btnTimeInSunday;
-	@FXML
-	private Button _btnTimeOutSunday;
-	@FXML
-	private RadioButton _btnRadioDifferent;
-	@FXML
-	private RadioButton _btnRadioSame;
+	private TextField _textDate;
 
-	public void onOptionSelect(ActionEvent event) {
-		Button[] arr = {
-				_btnTimeInMonday,
-				_btnTimeOutMonday,
-				_btnTimeInTuesday,
-				_btnTimeOutTuesday,
-				_btnTimeInWednesday,
-				_btnTimeOutWednesday,
-				_btnTimeInThursday,
-				_btnTimeOutThursday,
-				_btnTimeInFriday,
-				_btnTimeOutFriday,
-				_btnTimeInSaturday,
-				_btnTimeOutSaturday,
-				_btnTimeInSunday,
-				_btnTimeOutSunday};
-		Object source = event.getSource();
-		if (source == _btnRadioSame && _btnRadioSame.isSelected()) {
-			_btnTimeInSame.setDisable(false);
-			_btnTimeOutSame.setDisable(false);
-			for (final Button i: arr) {
-				i.setDisable(true);
-			}
-		}
-		else if (source == _btnRadioDifferent
-				&& _btnRadioDifferent.isSelected()) {
-			_btnTimeInSame.setDisable(true);
-			_btnTimeOutSame.setDisable(true);
-			for (final Button i: arr) {
-				i.setDisable(false);
-			}
-		}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		// show today's date on join-date button by default
+		final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+		final Date date = new Date();
+		_textDate.setText(format.format(date));
 	}
 
+	// handles back date buttons
 	public void onBtnClick(ActionEvent actionEvent) {
-		Object source = actionEvent.getSource();
+		final Object source = actionEvent.getSource();
 		if (source == _btnBack) {
 
 			// id will be ignored for back btn
 			_btnBack.fireEvent(new EmployeeItemEvent((byte) 0,
 					EmployeeItemEvent.BUTTON_TYPE_BACK));
 		}
+		else if (source == _btnAdd) {
+			final TextField[] textTimeArr = {
+					_textTimeMonday,
+					_textTimeTuesday,
+					_textTimeWednesday,
+					_textTImeThursday,
+					_textTimeFriday,
+					_textTimeSaturday,
+					_textTimeSunday};
+			// Repository.add
+		}
+	}
+
+	public void onTextClick(MouseEvent mouseEvent) {
+		Object source = mouseEvent.getSource();
+		if (source == _textDate) {
+			final DatePickerDialog dialog = new DatePickerDialog();
+			final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+			try {
+				final Date date = format.parse(_textDate.getText());
+				dialog.setDate(date.getTime());
+			}
+			catch (ParseException e) {
+				System.out.println(e.getMessage());
+			}
+			dialog.showAndWait();
+			long epoch = dialog.getResult();
+			final Date date = new Date();
+			date.setTime(epoch);
+			final String str = format.format(date);
+			_textDate.setText(str);
+		}
+	}
+
+	public void onTextTimeClick(MouseEvent event) {
+		final TextField source = (TextField) event.getSource();
+
+		TimePickerDialog dialog = new TimePickerDialog();
+		if (!source.getText().equals(Strings.TEXT_HOLIDAY)){
+			dialog.setTime(_getTime(source));
+		}
+		else {
+			dialog.setHolidayCheckboxSelected(true);
+			dialog.setTime((short) 0);
+		}
+		dialog.showAndWait();
+		short result = dialog.getResult();
+
+		// update all fields if mark all checkbox is selected
+		if (dialog.isMarkForALL()) {
+			final TextField[] textTimeArr = {
+					_textTimeMonday,
+					_textTimeTuesday,
+					_textTimeWednesday,
+					_textTImeThursday,
+					_textTimeFriday,
+					_textTimeSaturday,
+					_textTimeSunday};
+			if (result == -1) {
+				for (final TextField textTime: textTimeArr) {
+					textTime.setText(Strings.TEXT_HOLIDAY);
+				}
+			}
+			else {
+				for (final TextField textTime: textTimeArr) {
+					_setTime(result, textTime);
+				}
+			}
+		}
+		else {
+
+			// result can only be -1 for time in buttons as mark holiday
+			if (result == -1) {
+				source.setText(Strings.TEXT_HOLIDAY);
+			} else {
+				_setTime(dialog.getResult(), source);
+			}
+		}
+	}
+
+	// call only on time-buttons
+	private short _getTime(TextField btn) {
+		final String timeString = btn.getText();
+		final int colonIndex = timeString.indexOf(':');
+		final int spaceIndex = timeString.indexOf(' ');
+		final String period = timeString.substring(spaceIndex + 1);
+		final int m = Integer
+				.parseInt(timeString.substring(colonIndex + 1, spaceIndex));
+		int h = Integer.parseInt(timeString.substring(0, colonIndex));
+		if (period.equals("am")) {
+			h %= 12;
+		}
+		else { // else period is pm
+			h = h % 12 + 12;
+		}
+		return (short) (h * 60 + m);
+	}
+
+	private void _setTime(short timeInMinutes, TextField btn) {
+		int h = timeInMinutes / 60;
+		h %= 12;
+		if (h == 0) {
+			h = 12;
+		}
+		final int m = timeInMinutes % 60;
+		String timeString = h + ":";
+		if (m < 10) {
+			timeString += "0" + m;
+		}
+		else {
+			timeString += m;
+		}
+		if (timeInMinutes >= 720) {
+			timeString += " pm";
+		}
+		else {
+			timeString += " am";
+		}
+		btn.setText(timeString);
 	}
 }
