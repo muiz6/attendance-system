@@ -55,7 +55,7 @@ public class NavigationPanel implements Initializable,
 
 	@Override
 	public void handle(EmployeeItemEvent event) {
-		final byte employeeId = event.getEmployeeId();
+		final short employeeId = event.getEmployeeId();
 		switch (event.getButtonType()) {
 			case EmployeeItemEvent.BUTTON_TYPE_ADD_EMPLOYEE:
 				_stackPane.getChildren().clear();

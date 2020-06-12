@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 public class EmployeeRow implements Initializable {
 
-	private final byte _id;
+	private final short _id;
 	private final String _name;
 	private final long _joinDate;
 	@FXML
@@ -28,7 +28,7 @@ public class EmployeeRow implements Initializable {
 	@FXML
 	private Button _btnEdit;
 
-	public EmployeeRow(byte id, String name, long joinDate) {
+	public EmployeeRow(short id, String name, long joinDate) {
 		_id = id;
 		_name = name;
 		_joinDate = joinDate;
