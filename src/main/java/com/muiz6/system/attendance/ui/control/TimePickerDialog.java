@@ -35,4 +35,8 @@ public class TimePickerDialog extends Dialog<Short> {
 	public void setHolidayCheckboxSelected(boolean state) {
 		_controller.setHolidayCheckboxSelected(state);
 	}
+
+	public boolean isMarkForALL() {
+		return _controller.isMarkForAll();
+	}
 }
