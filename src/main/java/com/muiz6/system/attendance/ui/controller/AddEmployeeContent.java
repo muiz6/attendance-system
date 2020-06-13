@@ -1,6 +1,7 @@
 package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Repository;
+import com.muiz6.system.attendance.dto.NewEmployeeDto;
 import com.muiz6.system.attendance.ui.EmployeeItemEvent;
 import com.muiz6.system.attendance.ui.Strings;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
@@ -8,7 +9,9 @@ import com.muiz6.system.attendance.ui.control.TimePickerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 
@@ -16,10 +19,13 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 public class AddEmployeeContent implements Initializable {
 
+	@FXML
+	private TextField _textName;
 	@FXML
 	private Button _btnBack;
 	@FXML
@@ -31,7 +37,7 @@ public class AddEmployeeContent implements Initializable {
 	@FXML
 	private TextField _textTimeWednesday;
 	@FXML
-	private TextField _textTImeThursday;
+	private TextField _textTimeThursday;
 	@FXML
 	private TextField _textTimeSunday;
 	@FXML
@@ -60,15 +66,26 @@ public class AddEmployeeContent implements Initializable {
 					EmployeeItemEvent.BUTTON_TYPE_BACK));
 		}
 		else if (source == _btnAdd) {
-			final TextField[] textTimeArr = {
-					_textTimeMonday,
-					_textTimeTuesday,
-					_textTimeWednesday,
-					_textTImeThursday,
-					_textTimeFriday,
-					_textTimeSaturday,
-					_textTimeSunday};
-			// Repository.add
+			final NewEmployeeDto employee =  new NewEmployeeDto();
+			employee.setName(_textName.getText());
+			employee.setJoinDate(_getTextDateEpoch());
+			employee.setTimeInMonday(_getTime(_textTimeMonday));
+			employee.setTimeInTuesday(_getTime(_textTimeTuesday));
+			employee.setTimeInWednesday(_getTime(_textTimeWednesday));
+			employee.setTimeInThursday(_getTime(_textTimeThursday));
+			employee.setTimeInFriday(_getTime(_textTimeFriday));
+			employee.setTimeInSaturday(_getTime(_textTimeSaturday));
+			employee.setTimeInSunday(_getTime(_textTimeSunday));
+			Repository.addEmployee(employee, success -> {
+				if (success) {
+					Alert alert = new Alert(Alert.AlertType.INFORMATION,
+							"Employee Added Successfully",
+							ButtonType.OK);
+					alert.setTitle("Success");
+					alert.setHeaderText(null);
+					alert.showAndWait();
+				}
+			});
 		}
 	}
 
@@ -77,13 +94,7 @@ public class AddEmployeeContent implements Initializable {
 		if (source == _textDate) {
 			final DatePickerDialog dialog = new DatePickerDialog();
 			final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-			try {
-				final Date date = format.parse(_textDate.getText());
-				dialog.setDate(date.getTime());
-			}
-			catch (ParseException e) {
-				System.out.println(e.getMessage());
-			}
+			dialog.setDate(_getTextDateEpoch());
 			dialog.showAndWait();
 			long epoch = dialog.getResult();
 			final Date date = new Date();
@@ -97,12 +108,13 @@ public class AddEmployeeContent implements Initializable {
 		final TextField source = (TextField) event.getSource();
 
 		TimePickerDialog dialog = new TimePickerDialog();
-		if (!source.getText().equals(Strings.TEXT_HOLIDAY)){
-			dialog.setTime(_getTime(source));
-		}
-		else {
+		final short time = _getTime(source);
+		if (time == -1) { // holiday
 			dialog.setHolidayCheckboxSelected(true);
 			dialog.setTime((short) 0);
+		}
+		else {
+			dialog.setTime(_getTime(source));
 		}
 		dialog.showAndWait();
 		short result = dialog.getResult();
@@ -113,7 +125,7 @@ public class AddEmployeeContent implements Initializable {
 					_textTimeMonday,
 					_textTimeTuesday,
 					_textTimeWednesday,
-					_textTImeThursday,
+					_textTimeThursday,
 					_textTimeFriday,
 					_textTimeSaturday,
 					_textTimeSunday};
@@ -140,8 +152,13 @@ public class AddEmployeeContent implements Initializable {
 	}
 
 	// call only on time-buttons
-	private short _getTime(TextField btn) {
-		final String timeString = btn.getText();
+	private short _getTime(TextField field) {
+		if (field.getText().equals(Strings.TEXT_HOLIDAY)) {
+			return -1; // -1 marks holiday state
+		}
+
+		// else
+		final String timeString = field.getText();
 		final int colonIndex = timeString.indexOf(':');
 		final int spaceIndex = timeString.indexOf(' ');
 		final String period = timeString.substring(spaceIndex + 1);
@@ -178,5 +195,20 @@ public class AddEmployeeContent implements Initializable {
 			timeString += " am";
 		}
 		btn.setText(timeString);
+	}
+
+	private long _getTextDateEpoch() {
+		final DatePickerDialog dialog = new DatePickerDialog();
+		final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+		try {
+			final Date date = format.parse(_textDate.getText());
+			return date.getTime();
+		}
+		catch (ParseException e) {
+			System.out.println(e.getMessage());
+		}
+
+		// else
+		return 0;
 	}
 }

@@ -48,6 +48,7 @@
 		spacing="15">
 
 		<TextField
+			fx:id="_textName"
 			promptText="Enter Employee Name"
 			maxWidth="300"/>
 
@@ -120,7 +121,7 @@
 				GridPane.rowIndex="2"
 				GridPane.columnIndex="1"/>
 			<TextField
-				fx:id="_textTImeThursday"
+				fx:id="_textTimeThursday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"

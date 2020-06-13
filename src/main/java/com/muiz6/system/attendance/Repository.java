@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance;
 
+import com.muiz6.system.attendance.dto.NewEmployeeDto;
 import com.muiz6.system.attendance.model.EmployeeModel;
 
 import java.sql.*;
@@ -10,55 +11,35 @@ public abstract class Repository {
 
 	private static final String _PATH_TO_DATA_BASE = "jdbc:sqlite:data.db";
 	private static final String _TABLE_NAME_EMPLOYEES = "employees";
-	private static final String _TABLE_NAME_TIME_IN = "time-in";
-	private static final String _TABLE_NAME_TIME_OUT = "time-out";
+	private static final String _TABLE_NAME_TIME_IN = "time_in";
 	private static final String _TABLE_NAME_ATTENDANCE = "attendance";
-	private static final String _TABLE_NAME_HOLIDAY_DAY = "holiday-days";
-	private static final String _TABLE_NAME_HOLIDAY_DATE = "holiday-date";
 	private static final String _SQL_CREATE_TABLE_EMPLOYEES = MessageFormat
 			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	id tinyint IDENTITY(0, 1) PRIMARY KEY,\n"
-			+ "	name tinytext NOT NULL,\n"
-			+ "	join_date bigint NOT NULL\n"
+			+ "	id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
+			+ "	name TINYTEXT NOT NULL,\n"
+			+ "	join_date BIGINT NOT NULL,\n"
+			+ "	active BIT NOT NULL DEFAULT (1)\n"
 			+ ");", _TABLE_NAME_EMPLOYEES);
 	private static final String _SQL_CREATE_TABLE_TIME_IN = MessageFormat
 			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	employee_id tinyint NOT NULL,\n"
-			+ "	monday smallint,\n"
-			+ "	tuesday smallint,\n"
-			+ "	wednesday smallint,\n"
-			+ "	thursday smallint,\n"
-			+ "	friday smallint,\n"
-			+ "	saturday smallint,\n"
-			+ "	sunday smallint,\n"
-			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)\n"
+			+ " date BIGINT NOT NULL,\n"
+			+ "	id SMALLINT NOT NULL,\n"
+			+ "	monday SMALLINT NOT NULL,\n"
+			+ "	tuesday SMALLINT NOT NULL,\n"
+			+ "	wednesday SMALLINT NOT NULL,\n"
+			+ "	thursday SMALLINT NOT NULL,\n"
+			+ "	friday SMALLINT NOT NULL,\n"
+			+ "	saturday SMALLINT NOT NULL,\n"
+			+ "	sunday SMALLINT NOT NULL,\n"
+			+ " PRIMARY KEY(date, id)"
 			+ ");", _TABLE_NAME_TIME_IN);
-	private static final String _SQL_CREATE_TABLE_TIME_OUT = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	employee_id tinyint NOT NULL,\n"
-			+ "	monday smallint,\n"
-			+ "	tuesday smallint,\n"
-			+ "	wednesday smallint,\n"
-			+ "	thursday smallint,\n"
-			+ "	friday smallint,\n"
-			+ "	saturday smallint,\n"
-			+ "	sunday smallint,\n"
-			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)\n"
-			+ ");", _TABLE_NAME_TIME_OUT);
 	private static final String _SQL_CREATE_TABLE_ATTENDANCE = MessageFormat
 			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ " employee_id tinyint NOT NULL,\n"
-			+ " FOREIGN KEY (employee_id) REFERENCES employees (id)"
+			+ " date BIGINT NOT NULL,\n"
+			+ " id SMALLINT NOT NULL,\n"
+			+ " time_in SMALLINT NOT NULL,\n"
+			+ " PRIMARY KEY(date, id)\n"
 			+ ");", _TABLE_NAME_ATTENDANCE);
-	private static final String _SQL_CREATE_TABLE_HOLIDAY_DAY = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	day tinytext PRIMARY KEY,\n"
-			+ "	value bit NOT NULL\n"
-			+ ");", _TABLE_NAME_HOLIDAY_DAY);
-	private static final String _SQL_CREATE_TABLE_HOLIDAY_DATE = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	date bigint PRIMARY KEY\n"
-			+ ");", _TABLE_NAME_HOLIDAY_DATE);
 
 	public static void initializeDataBase() {
 		final String url = _PATH_TO_DATA_BASE;
@@ -70,10 +51,7 @@ public abstract class Repository {
 			// create tables
 			stmt.execute(_SQL_CREATE_TABLE_EMPLOYEES);
 			stmt.execute(_SQL_CREATE_TABLE_TIME_IN);
-			stmt.execute(_SQL_CREATE_TABLE_TIME_OUT);
 			stmt.execute(_SQL_CREATE_TABLE_ATTENDANCE);
-			stmt.execute(_SQL_CREATE_TABLE_HOLIDAY_DAY);
-			stmt.execute(_SQL_CREATE_TABLE_HOLIDAY_DATE);
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -82,10 +60,10 @@ public abstract class Repository {
 
 	public static ArrayList<EmployeeModel> getEmployees() {
 		final String url = _PATH_TO_DATA_BASE;
-
 		final String sql = MessageFormat
-				.format("SELECT {0}, {1}, {2} FROM {3}",
-				"id", "name", "join_date", _TABLE_NAME_EMPLOYEES);
+				.format("SELECT id, name, join_date FROM {0}" +
+								" WHERE active=1"
+						, _TABLE_NAME_EMPLOYEES);
 
 		try (final Connection conn = DriverManager.getConnection(url);
 			final Statement stmt = conn.createStatement();
@@ -94,7 +72,7 @@ public abstract class Repository {
 			final ArrayList<EmployeeModel> list = new ArrayList<>();
 			while(result.next()) {
 				final EmployeeModel model = new EmployeeModel();
-				model.setId(result.getByte("id"));
+				model.setId(result.getInt("id"));
 				model.setName(result.getString("name"));
 				model.setJoinDate(result.getLong("join_date"));
 				list.add(model);
@@ -107,5 +85,64 @@ public abstract class Repository {
 
 		// else
 		return new ArrayList<>();
+	}
+
+	public static void addEmployee(NewEmployeeDto employee,
+								   OnCompletionCallback callback) {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = MessageFormat
+				.format("SELECT MAX(id) AS maxId FROM {0}",
+						_TABLE_NAME_EMPLOYEES);
+
+		ResultSet result = null;
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final Statement stmt = conn.createStatement();) {
+
+			final String sql2 = MessageFormat
+					.format("INSERT INTO {0} (name, join_date)" +
+									" VALUES (''{1}'', ''{2}'');",
+							_TABLE_NAME_EMPLOYEES,
+							employee.getName(),
+							employee.getJoinDate());
+			stmt.execute(sql2);
+
+			// get id of just inserted employee
+			result = stmt.executeQuery(sql);
+			result.next();
+			final int id = result.getInt("maxId");
+
+			final String sql3 = MessageFormat
+					.format("INSERT INTO {0}" +
+									" VALUES (''{1}'', ''{2}'', ''{3}'', ''{4}'', ''{5}'', ''{6}'', ''{7}'', ''{8}'', ''{9}'');",
+							_TABLE_NAME_TIME_IN,
+							System.currentTimeMillis(),
+							id,
+							employee.getTimeInMonday(),
+							employee.getTimeInTuesday(),
+							employee.getTimeInWednesday(),
+							employee.getTimeInThursday(),
+							employee.getTimeInFriday(),
+							employee.getTimeInSaturday(),
+							employee.getTimeInSunday());
+			stmt.execute(sql3);
+			callback.onCompletion(true);
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			if (result != null) {
+				try {
+					result.close();
+				}
+				catch (SQLException e) {
+					System.out.println(e.getMessage());
+				}
+			}
+		}
+	}
+
+	public interface OnCompletionCallback {
+		void onCompletion(boolean success);
 	}
 }

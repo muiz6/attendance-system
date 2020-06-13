@@ -21,6 +21,8 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Repository.initializeDataBase();
+
 		primaryStage.setTitle(Strings.APPLICATION_TITLE);
 
 		// get gradle resource
