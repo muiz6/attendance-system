@@ -78,10 +78,18 @@ public class AddEmployeeContent implements Initializable {
 			employee.setTimeInSunday(_getTime(_textTimeSunday));
 			Repository.addEmployee(employee, success -> {
 				if (success) {
-					Alert alert = new Alert(Alert.AlertType.INFORMATION,
+					final Alert alert = new Alert(Alert.AlertType.INFORMATION,
 							"Employee Added Successfully",
 							ButtonType.OK);
 					alert.setTitle("Success");
+					alert.setHeaderText(null);
+					alert.showAndWait();
+				}
+				else {
+					final Alert alert = new Alert(Alert.AlertType.WARNING,
+							"Something went wrong!",
+							ButtonType.OK);
+					alert.setTitle("Failure");
 					alert.setHeaderText(null);
 					alert.showAndWait();
 				}

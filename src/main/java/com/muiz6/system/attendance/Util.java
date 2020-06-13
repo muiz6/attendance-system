@@ -71,7 +71,7 @@ public abstract class Util {
 	}
 
 	public static String getDate(long timestamp) {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yy");
+		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 		Date date = new Date(timestamp);
 		return format.format(date);
 	}
