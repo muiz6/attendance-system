@@ -74,7 +74,11 @@ public abstract class Repository {
 				final EmployeeModel model = new EmployeeModel();
 				model.setId(result.getInt("id"));
 				model.setName(result.getString("name"));
-				model.setJoinDate(result.getLong("join_date"));
+
+				// result.getLong("join_date") not working due to some reason
+				String joinDate = result.getString("join_date");
+				joinDate = joinDate.replaceAll(",", "");
+				model.setJoinDate(Long.parseLong(joinDate));
 				list.add(model);
 			}
 			return list;
@@ -113,7 +117,9 @@ public abstract class Repository {
 
 			final String sql3 = MessageFormat
 					.format("INSERT INTO {0}" +
-									" VALUES (''{1}'', ''{2}'', ''{3}'', ''{4}'', ''{5}'', ''{6}'', ''{7}'', ''{8}'', ''{9}'');",
+									" VALUES (''{1}'', ''{2}'', ''{3}''," +
+									" ''{4}'', ''{5}'', ''{6}'', ''{7}''," +
+									" ''{8}'', ''{9}'');",
 							_TABLE_NAME_TIME_IN,
 							System.currentTimeMillis(),
 							id,
@@ -129,6 +135,7 @@ public abstract class Repository {
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
+			callback.onCompletion(false);
 		}
 		finally {
 			if (result != null) {
