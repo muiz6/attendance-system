@@ -1,16 +1,16 @@
 package com.muiz6.system.attendance.model;
 
 public class EmployeeModel {
-	short _id;
+	int _id;
 	String _name;
 	long _joinDate;
 	boolean _isActive = true;
 
-	public short getId() {
+	public int getId() {
 		return _id;
 	}
 
-	public void setId(short id) {
+	public void setId(int id) {
 		_id = id;
 	}
 

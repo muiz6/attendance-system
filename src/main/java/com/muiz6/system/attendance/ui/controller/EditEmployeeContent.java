@@ -2,9 +2,9 @@ package com.muiz6.system.attendance.ui.controller;
 
 public class EditEmployeeContent {
 
-	private final short _id;
+	private final int _id;
 
-	public EditEmployeeContent(short employeeId) {
+	public EditEmployeeContent(int employeeId) {
 		_id = employeeId;
 	}
 }

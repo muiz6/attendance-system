@@ -11,17 +11,17 @@ public class EmployeeItemEvent extends Event {
 	public static final int BUTTON_TYPE_EDIT_EMPLOYEE = 1;
 	public static final int BUTTON_TYPE_ADD_EMPLOYEE = 2;
 	public static final int BUTTON_TYPE_BACK = 3;
-	private final short _id;
+	private final int _id;
 	private final int _buttonType;
 
-	public EmployeeItemEvent(short id, int buttonType) {
+	public EmployeeItemEvent(int id, int buttonType) {
 		super(EmployeeItemEvent.CUSTOM);
 
 		_id = id;
 		_buttonType = buttonType;
 	}
 
-	public short getEmployeeId() {
+	public int getEmployeeId() {
 		return _id;
 	}
 

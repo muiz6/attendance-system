@@ -2,9 +2,9 @@ package com.muiz6.system.attendance.ui.controller;
 
 public class ViewEmployeeContent {
 
-	private final short _id;
+	private final int _id;
 
-	public ViewEmployeeContent(short employeeId) {
+	public ViewEmployeeContent(int employeeId) {
 		_id = employeeId;
 	}
 }

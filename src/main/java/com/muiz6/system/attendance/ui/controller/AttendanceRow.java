@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
 
 public class AttendanceRow implements Initializable {
 
-	private final short _id;
+	private final int _id;
 	private final String _name;
 	private final long _joinDate;
 	@FXML
@@ -28,7 +28,7 @@ public class AttendanceRow implements Initializable {
 	@FXML
 	private ToggleButton _btnAttendance;
 
-	AttendanceRow(short id, String name, long joinDate) {
+	AttendanceRow(int id, String name, long joinDate) {
 		_id = id;
 		_name = name;
 		_joinDate = joinDate;
