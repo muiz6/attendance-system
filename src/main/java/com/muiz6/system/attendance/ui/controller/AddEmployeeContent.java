@@ -206,7 +206,6 @@ public class AddEmployeeContent implements Initializable {
 	}
 
 	private long _getTextDateEpoch() {
-		final DatePickerDialog dialog = new DatePickerDialog();
 		final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 		try {
 			final Date date = format.parse(_textDate.getText());
