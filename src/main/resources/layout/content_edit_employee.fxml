@@ -1,14 +1,193 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import java.lang.String?>
 
 <VBox
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.controller.EditEmployeeContent"
-	alignment="CENTER">
+	fx:controller="com.muiz6.system.attendance.ui.controller.EditEmployeeContent">
 
-	<Label text="Edit Employee"/>
+	<!--	re usable objects-->
+	<fx:define>
+		<ToggleGroup fx:id="toggle_group"/>
+		<String
+			fx:id="string_time_default"
+			fx:value="12:00 am"/>
+		<String
+			fx:id="string_time_default_holiday"
+			fx:value="Holiday"/>
+	</fx:define>
+
+	<HBox
+		maxWidth="Infinity">
+		<Button
+			fx:id="btnBack"
+			text="Back"
+			onAction="#onBtnClick"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="0"/>
+
+		<Label
+			text = "Edit Employee"
+			maxWidth="Infinity"
+			alignment="CENTER"
+			HBox.hgrow="ALWAYS">
+			<padding>
+				<Insets top="15"/>
+			</padding>
+		</Label>
+	</HBox>
+
+	<VBox
+		VBox.vgrow="ALWAYS"
+		maxHeight="Infinity"
+		alignment="CENTER"
+		spacing="15">
+
+		<TextField
+			fx:id="textName"
+			promptText="Enter Employee Name"
+			maxWidth="300"/>
+
+		<HBox
+			spacing="15"
+			maxWidth="300">
+			<Label
+				text="Join Date:"
+				maxHeight="Infinity"/>
+			<TextField
+				fx:id="textDate"
+				HBox.hgrow="ALWAYS"
+				text="01-Jan-2020"
+				editable="false"
+				disable="true"
+				alignment="CENTER"
+				maxWidth="Infinity"/>
+		</HBox>
+
+		<Label
+			text="Time In"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="1"/>
+
+		<GridPane
+			maxWidth="300"
+			vgap="10"
+			hgap="10">
+
+			<Label
+				text="Monday"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="0"/>
+			<TextField
+				fx:id="textTimeMonday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="0"/>
+
+			<Label text="Tuesday"
+				   GridPane.rowIndex="0"
+				   GridPane.columnIndex="1"/>
+			<TextField
+				fx:id="textTimeTuesday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="1"
+				GridPane.columnIndex="1"/>
+
+			<Label
+				text="Wednesday"
+				GridPane.rowIndex="2"
+				GridPane.columnIndex="0"/>
+			<TextField
+				fx:id="textTimeWednesday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="3"
+				GridPane.columnIndex="0"/>
+
+			<Label
+				text="Thursday"
+				GridPane.rowIndex="2"
+				GridPane.columnIndex="1"/>
+			<TextField
+				fx:id="textTimeThursday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="3"
+				GridPane.columnIndex="1"/>
+
+			<Label
+				text="Friday"
+				GridPane.rowIndex="4"
+				GridPane.columnIndex="0"/>
+			<TextField
+				fx:id="textTimeFriday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="5"
+				GridPane.columnIndex="0"/>
+
+			<Label
+				text="Saturday"
+				GridPane.rowIndex="4"
+				GridPane.columnIndex="1"/>
+			<TextField
+				fx:id="textTimeSaturday"
+				text="$string_time_default"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="5"
+				GridPane.columnIndex="1"/>
+
+			<Label
+				text="Sunday"
+				GridPane.rowIndex="6"
+				GridPane.columnIndex="0"
+				GridPane.columnSpan="2"/>
+			<TextField
+				fx:id="textTimeSunday"
+				text="$string_time_default_holiday"
+				editable="false"
+				alignment="CENTER"
+				onMouseClicked="#onTextTimeClick"
+				GridPane.rowIndex="7"
+				GridPane.columnIndex="0"
+				GridPane.columnSpan="2"/>
+
+			<columnConstraints>
+				<ColumnConstraints
+					hgrow="ALWAYS"
+					halignment="CENTER"/>
+				<ColumnConstraints
+					hgrow="ALWAYS"
+					halignment="CENTER"/>
+			</columnConstraints>
+
+		</GridPane>
+
+		<Button
+			fx:id="btnAdd"
+			text="Update"
+			onAction="#onBtnClick"
+			maxWidth="300"
+			GridPane.halignment="CENTER"/>
+
+	</VBox>
 
 </VBox>

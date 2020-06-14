@@ -24,7 +24,7 @@
 	<HBox
 		maxWidth="Infinity">
 		<Button
-			fx:id="_btnBack"
+			fx:id="btnBack"
 			text="Back"
 			onAction="#onBtnClick"
 			GridPane.rowIndex="0"
@@ -48,7 +48,7 @@
 		spacing="15">
 
 		<TextField
-			fx:id="_textName"
+			fx:id="textName"
 			promptText="Enter Employee Name"
 			maxWidth="300"/>
 
@@ -59,7 +59,7 @@
 				text="Join Date:"
 				maxHeight="Infinity"/>
 			<TextField
-				fx:id="_textDate"
+				fx:id="textDate"
 				HBox.hgrow="ALWAYS"
 				text="01-Jan-2020"
 				editable="false"
@@ -83,7 +83,7 @@
 				GridPane.rowIndex="0"
 				GridPane.columnIndex="0"/>
 			<TextField
-				fx:id="_textTimeMonday"
+				fx:id="textTimeMonday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -95,7 +95,7 @@
 				GridPane.rowIndex="0"
 				GridPane.columnIndex="1"/>
 			<TextField
-				fx:id="_textTimeTuesday"
+				fx:id="textTimeTuesday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -108,7 +108,7 @@
 				GridPane.rowIndex="2"
 				GridPane.columnIndex="0"/>
 			<TextField
-				fx:id="_textTimeWednesday"
+				fx:id="textTimeWednesday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -121,7 +121,7 @@
 				GridPane.rowIndex="2"
 				GridPane.columnIndex="1"/>
 			<TextField
-				fx:id="_textTimeThursday"
+				fx:id="textTimeThursday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -134,7 +134,7 @@
 				GridPane.rowIndex="4"
 				GridPane.columnIndex="0"/>
 			<TextField
-				fx:id="_textTimeFriday"
+				fx:id="textTimeFriday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -147,7 +147,7 @@
 				GridPane.rowIndex="4"
 				GridPane.columnIndex="1"/>
 			<TextField
-				fx:id="_textTimeSaturday"
+				fx:id="textTimeSaturday"
 				text="$string_time_default"
 				editable="false"
 				alignment="CENTER"
@@ -161,7 +161,7 @@
 				GridPane.columnIndex="0"
 				GridPane.columnSpan="2"/>
 			<TextField
-				fx:id="_textTimeSunday"
+				fx:id="textTimeSunday"
 				text="$string_time_default_holiday"
 				editable="false"
 				alignment="CENTER"
@@ -182,7 +182,7 @@
 		</GridPane>
 
 		<Button
-			fx:id="_btnAdd"
+			fx:id="btnAdd"
 			text="Add"
 			onAction="#onBtnClick"
 			maxWidth="300"
