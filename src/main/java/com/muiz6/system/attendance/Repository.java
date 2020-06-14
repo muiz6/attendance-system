@@ -1,45 +1,43 @@
 package com.muiz6.system.attendance;
 
 import com.muiz6.system.attendance.dto.NewEmployeeDto;
-import com.muiz6.system.attendance.model.EmployeeModel;
+import com.muiz6.system.attendance.model.AttendanceItemModel;
+import com.muiz6.system.attendance.model.EmployeeItemModel;
 
 import java.sql.*;
-import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 
 public abstract class Repository {
 
 	private static final String _PATH_TO_DATA_BASE = "jdbc:sqlite:data.db";
-	private static final String _TABLE_NAME_EMPLOYEES = "employees";
-	private static final String _TABLE_NAME_TIME_IN = "time_in";
-	private static final String _TABLE_NAME_ATTENDANCE = "attendance";
-	private static final String _SQL_CREATE_TABLE_EMPLOYEES = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ "	id INTEGER PRIMARY KEY AUTOINCREMENT,\n"
-			+ "	name TINYTEXT NOT NULL,\n"
-			+ "	join_date BIGINT NOT NULL,\n"
-			+ "	active BIT NOT NULL DEFAULT (1)\n"
-			+ ");", _TABLE_NAME_EMPLOYEES);
-	private static final String _SQL_CREATE_TABLE_TIME_IN = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ " date BIGINT NOT NULL,\n"
-			+ "	id SMALLINT NOT NULL,\n"
-			+ "	monday SMALLINT NOT NULL,\n"
-			+ "	tuesday SMALLINT NOT NULL,\n"
-			+ "	wednesday SMALLINT NOT NULL,\n"
-			+ "	thursday SMALLINT NOT NULL,\n"
-			+ "	friday SMALLINT NOT NULL,\n"
-			+ "	saturday SMALLINT NOT NULL,\n"
-			+ "	sunday SMALLINT NOT NULL,\n"
-			+ " PRIMARY KEY(date, id)"
-			+ ");", _TABLE_NAME_TIME_IN);
-	private static final String _SQL_CREATE_TABLE_ATTENDANCE = MessageFormat
-			.format("CREATE TABLE IF NOT EXISTS {0} (\n"
-			+ " date BIGINT NOT NULL,\n"
-			+ " id SMALLINT NOT NULL,\n"
-			+ " time_in SMALLINT NOT NULL,\n"
-			+ " PRIMARY KEY(date, id)\n"
-			+ ");", _TABLE_NAME_ATTENDANCE);
+	private static final String _SQL_CREATE_TABLE_EMPLOYEES =
+			"CREATE TABLE IF NOT EXISTS employees (\n" +
+					" id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+					" name TINYTEXT NOT NULL,\n" +
+					" join_date BIGINT NOT NULL,\n" +
+					" active BIT NOT NULL DEFAULT (1));";
+	private static final String _SQL_CREATE_TABLE_TIME_IN =
+			"CREATE TABLE IF NOT EXISTS time_in (\n" +
+					" date BIGINT NOT NULL,\n" +
+					" id SMALLINT NOT NULL,\n" +
+					" monday SMALLINT NOT NULL,\n" +
+					" tuesday SMALLINT NOT NULL,\n" +
+					" wednesday SMALLINT NOT NULL,\n" +
+					" thursday SMALLINT NOT NULL,\n" +
+					" friday SMALLINT NOT NULL,\n" +
+					" saturday SMALLINT NOT NULL,\n" +
+					" sunday SMALLINT NOT NULL,\n" +
+					" PRIMARY KEY(date, id));";
+	private static final String _SQL_CREATE_TABLE_ATTENDANCE =
+			"CREATE TABLE IF NOT EXISTS attendance (\n" +
+					" date BIGINT NOT NULL,\n" +
+					" id SMALLINT NOT NULL,\n" +
+					" time_in SMALLINT NOT NULL,\n" +
+					" PRIMARY KEY(date, id));";
 
 	public static void initializeDataBase() {
 		final String url = _PATH_TO_DATA_BASE;
@@ -58,27 +56,21 @@ public abstract class Repository {
 		}
 	}
 
-	public static ArrayList<EmployeeModel> getEmployees() {
+	public static ArrayList<EmployeeItemModel> getEmployees() {
 		final String url = _PATH_TO_DATA_BASE;
-		final String sql = MessageFormat
-				.format("SELECT id, name, join_date FROM {0}" +
-								" WHERE active=1"
-						, _TABLE_NAME_EMPLOYEES);
+		final String sql = "SELECT id, name, join_date FROM employees" +
+				" WHERE active=1;";
 
 		try (final Connection conn = DriverManager.getConnection(url);
-			final Statement stmt = conn.createStatement();
-			final ResultSet result = stmt.executeQuery(sql)) {
+			 final Statement stmt = conn.createStatement();
+			 final ResultSet result = stmt.executeQuery(sql)) {
 
-			final ArrayList<EmployeeModel> list = new ArrayList<>();
+			final ArrayList<EmployeeItemModel> list = new ArrayList<>();
 			while(result.next()) {
-				final EmployeeModel model = new EmployeeModel();
+				final EmployeeItemModel model = new EmployeeItemModel();
 				model.setId(result.getInt("id"));
 				model.setName(result.getString("name"));
-
-				// result.getLong("join_date") not working due to some reason
-				String joinDate = result.getString("join_date");
-				joinDate = joinDate.replaceAll(",", "");
-				model.setJoinDate(Long.parseLong(joinDate));
+				model.setJoinDate(result.getLong("join_date"));
 				list.add(model);
 			}
 			return list;
@@ -92,63 +84,145 @@ public abstract class Repository {
 	}
 
 	public static void addEmployee(NewEmployeeDto employee,
-								   OnCompletionCallback callback) {
+			OnCompletionCallback callback) {
 		final String url = _PATH_TO_DATA_BASE;
-		final String sql = MessageFormat
-				.format("SELECT MAX(id) AS maxId FROM {0}",
-						_TABLE_NAME_EMPLOYEES);
+		final String sql = "INSERT INTO employees (name, join_date) VALUES (?, ?);";
+		final String sql2 = "SELECT MAX(id) AS maxId FROM employees;";
+		final String sql3 = "INSERT INTO time_in VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
-		ResultSet result = null;
 		try (final Connection conn = DriverManager.getConnection(url);
-			 final Statement stmt = conn.createStatement();) {
-
-			final String sql2 = MessageFormat
-					.format("INSERT INTO {0} (name, join_date)" +
-									" VALUES (''{1}'', ''{2}'');",
-							_TABLE_NAME_EMPLOYEES,
-							employee.getName(),
-							employee.getJoinDate());
-			stmt.execute(sql2);
+			 final Statement stmt = conn.createStatement();
+			 final PreparedStatement prepStmt = conn.prepareStatement(sql)) {
+			prepStmt.setString(1, employee.getName());
+			prepStmt.setLong(2, employee.getJoinDate());
+			prepStmt.execute();
 
 			// get id of just inserted employee
-			result = stmt.executeQuery(sql);
-			result.next();
-			final int id = result.getInt("maxId");
-
-			final String sql3 = MessageFormat
-					.format("INSERT INTO {0}" +
-									" VALUES (''{1}'', ''{2}'', ''{3}''," +
-									" ''{4}'', ''{5}'', ''{6}'', ''{7}''," +
-									" ''{8}'', ''{9}'');",
-							_TABLE_NAME_TIME_IN,
-							System.currentTimeMillis(),
-							id,
-							employee.getTimeInMonday(),
-							employee.getTimeInTuesday(),
-							employee.getTimeInWednesday(),
-							employee.getTimeInThursday(),
-							employee.getTimeInFriday(),
-							employee.getTimeInSaturday(),
-							employee.getTimeInSunday());
-			stmt.execute(sql3);
+			try (final ResultSet rs = stmt.executeQuery(sql2);
+				 final PreparedStatement prepStmt2 = conn.prepareStatement(sql3)) {
+				rs.next();
+				final int id = rs.getInt("maxId");
+				prepStmt2.setLong(1, employee.getJoinDate());
+				prepStmt2.setInt(2, id);
+				prepStmt2.setShort(3, employee.getTimeInMonday());
+				prepStmt2.setShort(4, employee.getTimeInTuesday());
+				prepStmt2.setShort(5, employee.getTimeInWednesday());
+				prepStmt2.setShort(6, employee.getTimeInThursday());
+				prepStmt2.setShort(7, employee.getTimeInFriday());
+				prepStmt2.setShort(8, employee.getTimeInSaturday());
+				prepStmt2.setShort(9, employee.getTimeInSunday());
+				prepStmt2.execute();
+			}
 			callback.onCompletion(true);
 		}
 		catch (SQLException e) {
 			System.out.println(e.getMessage());
 			callback.onCompletion(false);
 		}
-		finally {
-			if (result != null) {
-				try {
-					result.close();
-				}
-				catch (SQLException e) {
-					System.out.println(e.getMessage());
+	}
+
+	/**
+	 * mark absent/holiday of all employees at start of program for today,
+	 * except the ones that has already been added to today's attendance
+	 * record.
+	 */
+	public static void markEmployeeAbsentAll() {
+		final long epochMilliDate = LocalDate.now()
+				.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
+		final String sql = "SELECT id FROM employees;";
+		final String sql2 = "SELECT id FROM attendance WHERE date=?;";
+		final String sql3 = "INSERT INTO attendance VALUES (?, ?, ?);";
+
+		try (final Connection conn = DriverManager.getConnection(_PATH_TO_DATA_BASE);
+			 final Statement stmt = conn.createStatement();
+			 final ResultSet rs = stmt.executeQuery(sql);
+			 final PreparedStatement prepStmt = conn.prepareStatement(sql2);
+			 final PreparedStatement insertStmt = conn.prepareStatement(sql3)) {
+			final ArrayList<Integer> regIds = new ArrayList<>();
+			while (rs.next()) {
+				regIds.add(rs.getInt("id"));
+			}
+
+			prepStmt.setLong(1, epochMilliDate);
+			final ArrayList<Integer> markedIds =  new ArrayList<>();
+			try (ResultSet rs2 = prepStmt.executeQuery()) {
+				while (rs2.next()) {
+					markedIds.add(rs2.getInt("id"));
 				}
 			}
+
+			// now only ids that have not been marked for today are left
+			regIds.removeAll(markedIds);
+			for (final int id: regIds) {
+				insertStmt.setLong(1, epochMilliDate);
+				insertStmt.setInt(2, id);
+
+				// weekday for column to lookup in time_in table
+				final String weekDay = new SimpleDateFormat("EEEE")
+						.format(new Date()).toLowerCase();
+				final short timeInToday;
+				final String sql5 = String
+						.format("SELECT %s from time_in WHERE id=%d" +
+								" ORDER BY date DESC LIMIT 1;",
+						weekDay, id);
+				try (final ResultSet rsTimeIn = stmt.executeQuery(sql5)) {
+					rsTimeIn.next();
+					timeInToday = rsTimeIn.getShort(weekDay);
+				}
+				if (timeInToday == Constants.TIME_IN_HOLIDAY) {
+					insertStmt.setShort(3, Constants.TIME_IN_HOLIDAY);
+				}
+				else {
+					insertStmt.setShort(3, Constants.TIME_IN_ABSENT);
+				}
+				insertStmt.execute();
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 
+	public static ArrayList<AttendanceItemModel> getAttendanceList() {
+		final String sql = "SELECT id, time_in FROM attendance WHERE date=?;";
+		final String sql2 = "SELECT name, join_date FROM employees WHERE id=?;";
+
+		final String url = _PATH_TO_DATA_BASE;
+		try (final Connection conn = DriverManager.getConnection(url);
+			 PreparedStatement stmt = conn.prepareStatement(sql)) {
+			final long epochMilliDate = LocalDate.now()
+					.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
+			stmt.setLong(1, epochMilliDate);
+			ArrayList<AttendanceItemModel> list = new ArrayList<>();
+			try (ResultSet rs = stmt.executeQuery();
+				 PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+				while (rs.next()) {
+					AttendanceItemModel model = new AttendanceItemModel();
+					final int id = rs.getInt("id");
+					model.setId(id);
+					model.setTimeIn(rs.getShort("time_in"));
+
+					stmt2.setInt(1, id);
+					try (ResultSet rs2 = stmt2.executeQuery()) {
+						rs2.next();
+						model.setName(rs2.getString("name"));
+						model.setJoinDate(rs2.getLong("join_date"));
+					}
+					list.add(model);
+				}
+			}
+			return list;
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return new ArrayList<>();
+	}
+
+	/**
+	 * used by some methods of Repository to notify if the process was a
+	 * success or a failure
+	 */
 	public interface OnCompletionCallback {
 		void onCompletion(boolean success);
 	}

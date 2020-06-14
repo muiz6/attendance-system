@@ -20,4 +20,7 @@ public class Constants {
 			"layout/row_attendance.fxml";
 	public static final String RES_FXML_TIME_PICKER =
 			"layout/time_picker.fxml";
+
+	public static final short TIME_IN_ABSENT = -2;
+	public static final short TIME_IN_HOLIDAY = -1;
 }

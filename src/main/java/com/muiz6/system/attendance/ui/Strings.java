@@ -8,4 +8,6 @@ public abstract class Strings {
 	public static final String PREFIX_EMPLOYEE_ID = "ID: ";
 	public static final String PREFIX_EMPLOYEE_NAME = "Name: ";
 	public static final String PREFIX_EMPLOYEE_JOIN_DATE = "Join Date: ";
+	public static final String TEXT_ABSENT = "Absent";
+	public static final String TEXT_PRESENT = "Present";
 }

@@ -28,7 +28,6 @@
 
 	<ToggleButton
 		fx:id="_btnAttendance"
-		text="A"
 		GridPane.rowIndex="0"
 		GridPane.columnIndex="1"
 		GridPane.rowSpan="3"

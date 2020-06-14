@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.Strings;
 import javafx.event.ActionEvent;
@@ -19,6 +20,7 @@ public class AttendanceRow implements Initializable {
 	private final int _id;
 	private final String _name;
 	private final long _joinDate;
+	private final short _timeIn;
 	@FXML
 	private Label _labelName;
 	@FXML
@@ -28,10 +30,11 @@ public class AttendanceRow implements Initializable {
 	@FXML
 	private ToggleButton _btnAttendance;
 
-	AttendanceRow(int id, String name, long joinDate) {
+	AttendanceRow(int id, String name, long joinDate, short timeIn) {
 		_id = id;
 		_name = name;
 		_joinDate = joinDate;
+		_timeIn = timeIn;
 	}
 
 	@Override
@@ -40,6 +43,18 @@ public class AttendanceRow implements Initializable {
 		_labelName.setText(Strings.PREFIX_EMPLOYEE_NAME + _name);
 		_labelJoinDate.setText(Strings.PREFIX_EMPLOYEE_JOIN_DATE
 				+ Util.getDate(_joinDate));
+		switch (_timeIn) {
+			case Constants.TIME_IN_ABSENT:
+				_btnAttendance.setText(Strings.TEXT_ABSENT);
+				break;
+			case Constants.TIME_IN_HOLIDAY:
+				_btnAttendance.setText(Strings.TEXT_HOLIDAY);
+				_btnAttendance.setDisable(true);
+				break;
+			default:
+				_btnAttendance.setText(Strings.TEXT_PRESENT);
+				_btnAttendance.setSelected(true);
+		}
 	}
 
 	public void onAttendanceBtnClick(ActionEvent actionEvent) {

@@ -22,6 +22,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		Repository.initializeDataBase();
+		Repository.markEmployeeAbsentAll();
 
 		primaryStage.setTitle(Strings.APPLICATION_TITLE);
 
