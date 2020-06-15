@@ -6,6 +6,7 @@ import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 
@@ -14,8 +15,11 @@ import java.util.ResourceBundle;
 
 public class EditEmployeeContent extends AddEditEmployeeBase {
 
-	public TextField textId; // fxml field
 	private final EmployeeModel _employee;
+
+	// fxml fields
+	public Button btnDisableEmployee;
+	public TextField textId;
 
 	public EditEmployeeContent(int employeeId) {
 		_employee = Repository.getEmployee(employeeId);
@@ -51,10 +55,49 @@ public class EditEmployeeContent extends AddEditEmployeeBase {
 
 	@Override
 	public void onSubmitBtnClick() {
-		Alert alert = new Alert(Alert.AlertType.INFORMATION,
-				"Button Clicked!",
-				ButtonType.OK);
-		alert.setHeaderText(null);
-		alert.showAndWait();
+		EmployeeModel employee = new EmployeeModel();
+		employee.setId(_employee.getId());
+		employee.setName(textName.getText());
+		employee.setJoinDate(_employee.getJoinDate());
+		employee.setTimeInMonday(getTime(textTimeMonday));
+		employee.setTimeInTuesday(getTime(textTimeTuesday));
+		employee.setTimeInWednesday(getTime(textTimeWednesday));
+		employee.setTimeInThursday(getTime(textTimeThursday));
+		employee.setTimeInFriday(getTime(textTimeFriday));
+		employee.setTimeInSaturday(getTime(textTimeSaturday));
+		employee.setTimeInSunday(getTime(textTimeSunday));
+		Repository.updateEmployee(employee, (success) -> {
+			if (success) {
+				final Alert alert = new Alert(Alert.AlertType.INFORMATION,
+						"Employee Updated Successfully",
+						ButtonType.OK);
+				alert.setTitle("Success");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+			}
+			else {
+				final Alert alert = new Alert(Alert.AlertType.WARNING,
+						"Something went wrong!",
+						ButtonType.OK);
+				alert.setTitle("Failure");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+			}
+		});
+	}
+
+	public void onBtnDisableClick(ActionEvent actionEvent) {
+		if (actionEvent.getSource() == btnDisableEmployee) {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+					"This action cannot be undone!",
+					ButtonType.YES,
+					ButtonType.NO);
+			alert.setHeaderText("Disable Employee?");
+			alert.showAndWait();
+			if (alert.getResult() == ButtonType.YES) {
+				btnAdd.setDisable(true);
+				Repository.disableEmployee(_employee.getId());
+			}
+		}
 	}
 }

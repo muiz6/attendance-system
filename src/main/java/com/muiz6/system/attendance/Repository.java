@@ -4,6 +4,7 @@ import com.muiz6.system.attendance.dto.NewEmployeeDto;
 import com.muiz6.system.attendance.model.AttendanceItemModel;
 import com.muiz6.system.attendance.model.EmployeeItemModel;
 import com.muiz6.system.attendance.model.EmployeeModel;
+import javafx.application.Platform;
 import jdk.internal.jline.internal.Nullable;
 
 import java.sql.*;
@@ -87,43 +88,35 @@ public abstract class Repository {
 
 	public static void addEmployee(NewEmployeeDto employee,
 			OnCompletionCallback callback) {
-		final String url = _PATH_TO_DATA_BASE;
-		final String sql = "INSERT INTO employees (name, join_date) VALUES (?, ?);";
-		final String sql2 = "SELECT MAX(id) AS maxId FROM employees;";
-		final String sql3 = "INSERT INTO time_in VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		new Thread(() -> {
+			final String url = _PATH_TO_DATA_BASE;
+			final String sql = "INSERT INTO employees (name, join_date) VALUES (?, ?);";
+			final String sql2 = "SELECT MAX(id) AS maxId FROM employees;";
 
-		try (final Connection conn = DriverManager.getConnection(url);
-			 final Statement stmt = conn.createStatement();
-			 final PreparedStatement prepStmt = conn.prepareStatement(sql)) {
-			prepStmt.setString(1, employee.getName());
-			prepStmt.setLong(2, employee.getJoinDate());
-			prepStmt.execute();
+			try (final Connection conn = DriverManager.getConnection(url);
+				 final Statement stmt = conn.createStatement();
+				 final PreparedStatement prepStmt = conn.prepareStatement(sql)) {
+				prepStmt.setString(1, employee.getName());
+				prepStmt.setLong(2, employee.getJoinDate());
+				prepStmt.execute();
 
-			// get id of just inserted employee
-			try (final ResultSet rs = stmt.executeQuery(sql2);
-				 final PreparedStatement prepStmt2 = conn.prepareStatement(sql3)) {
-				rs.next();
-				final int id = rs.getInt("maxId");
-				final long epochMilliDate = LocalDate.now()
-						.atStartOfDay(ZoneId.systemDefault())
-						.toEpochSecond() * 1000;
-				prepStmt2.setLong(1, epochMilliDate); // today date at 12am
-				prepStmt2.setInt(2, id);
-				prepStmt2.setShort(3, employee.getTimeInMonday());
-				prepStmt2.setShort(4, employee.getTimeInTuesday());
-				prepStmt2.setShort(5, employee.getTimeInWednesday());
-				prepStmt2.setShort(6, employee.getTimeInThursday());
-				prepStmt2.setShort(7, employee.getTimeInFriday());
-				prepStmt2.setShort(8, employee.getTimeInSaturday());
-				prepStmt2.setShort(9, employee.getTimeInSunday());
-				prepStmt2.execute();
+				// get id of just inserted employee
+				try (final ResultSet rs = stmt.executeQuery(sql2)) {
+					rs.next();
+					final int id = rs.getInt("maxId");
+					_insertTimeInRecord(conn, employee, id);
+				}
+				Platform.runLater(() -> {
+					callback.onCompletion(true);
+				});
 			}
-			callback.onCompletion(true);
-		}
-		catch (SQLException e) {
-			System.out.println(e.getMessage());
-			callback.onCompletion(false);
-		}
+			catch (SQLException e) {
+				System.out.println(e.getMessage());
+				Platform.runLater(() -> {
+					callback.onCompletion(false);
+				});
+			}
+		}).start();
 	}
 
 	/**
@@ -259,12 +252,98 @@ public abstract class Repository {
 		return null;
 	}
 
-	public static void updateEmployee(NewEmployeeDto employee) {
-
+	public static void updateEmployee(EmployeeModel employee,
+			OnCompletionCallback callback) {
+		new Thread(() -> {
+			final String url = _PATH_TO_DATA_BASE;
+			final String sql = "SELECT date FROM time_in WHERE id=? ORDER BY date DESC LIMIT 1;";
+			final String sql2 = "UPDATE time_in" +
+					" SET monday=?, tuesday=?, wednesday=?, thursday=?," +
+					" friday=?, saturday=?, sunday=?" +
+					" WHERE date=? AND id=?;";
+			try (final Connection conn = DriverManager.getConnection(url);
+				 final PreparedStatement stmt = conn.prepareStatement(sql)) {
+				stmt.setInt(1, employee.getId());
+				try (ResultSet rs = stmt.executeQuery()) {
+					rs.next();
+					long storedDate = rs.getLong("date");
+					final long epochMilliToday = LocalDate.now()
+							.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
+					if (storedDate == epochMilliToday) {
+						try (final PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+							stmt2.setShort(1, employee.getTimeInMonday());
+							stmt2.setShort(2, employee.getTimeInTuesday());
+							stmt2.setShort(3, employee.getTimeInWednesday());
+							stmt2.setShort(4, employee.getTimeInThursday());
+							stmt2.setShort(5, employee.getTimeInFriday());
+							stmt2.setShort(6, employee.getTimeInSaturday());
+							stmt2.setShort(7, employee.getTimeInSunday());
+							stmt2.setLong(8, epochMilliToday);
+							stmt2.setInt(9, employee.getId());
+							stmt2.execute();
+							_updateEmployeeName(conn, employee.getId(), employee.getName());
+						}
+					}
+					else {
+						_insertTimeInRecord(conn, employee, employee.getId());
+					}
+				}
+				Platform.runLater(() -> {
+					callback.onCompletion(true);
+				});
+			}
+			catch (SQLException e) {
+				System.out.println(e.getMessage());
+				Platform.runLater(() -> {
+					callback.onCompletion(false);
+				});
+			}
+		}).start();
 	}
 
-	private static void _insertTimeIn(NewEmployeeDto employee) {
+	public static void disableEmployee(int id) {
+		new Thread(() -> {
+			String url = _PATH_TO_DATA_BASE;
+			String sql = "UPDATE employees SET active=0 WHERE id=?;";
+			try (final Connection conn = DriverManager.getConnection(url);
+				 final PreparedStatement stmt = conn.prepareStatement(sql)) {
+				stmt.setInt(1, id);
+				stmt.execute();
+			}
+			catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}).start();
+	}
 
+	private static void _insertTimeInRecord(Connection conn,
+			NewEmployeeDto employee, int id) throws SQLException {
+		final String sql = "INSERT INTO time_in VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+		final PreparedStatement prepStmt = conn.prepareStatement(sql);
+
+		final long epochMilliDate = LocalDate.now()
+				.atStartOfDay(ZoneId.systemDefault())
+				.toEpochSecond() * 1000;
+		prepStmt.setLong(1, epochMilliDate); // today date at 12am
+		prepStmt.setInt(2, id);
+		prepStmt.setShort(3, employee.getTimeInMonday());
+		prepStmt.setShort(4, employee.getTimeInTuesday());
+		prepStmt.setShort(5, employee.getTimeInWednesday());
+		prepStmt.setShort(6, employee.getTimeInThursday());
+		prepStmt.setShort(7, employee.getTimeInFriday());
+		prepStmt.setShort(8, employee.getTimeInSaturday());
+		prepStmt.setShort(9, employee.getTimeInSunday());
+		prepStmt.execute();
+		_updateEmployeeName(conn, id, employee.getName());
+	}
+
+	private static void _updateEmployeeName(Connection conn, int id, String name)
+			throws SQLException {
+		final String sql = "UPDATE employees SET name=? WHERE id=?;";
+		PreparedStatement stmt = conn.prepareStatement(sql);
+		stmt.setString(1, name);
+		stmt.setInt(2, id);
+		stmt.execute();
 	}
 
 	/**

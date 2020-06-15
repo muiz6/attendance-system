@@ -205,4 +205,12 @@
 
 	</VBox>
 
+	<HBox
+		alignment="CENTER_RIGHT">
+		<Button
+			fx:id="btnDisableEmployee"
+			text="Disable Employee"
+			onAction="#onBtnDisableClick"/>
+	</HBox>
+
 </VBox>
