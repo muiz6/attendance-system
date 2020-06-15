@@ -8,8 +8,6 @@ import javafx.util.Pair;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public abstract class Util {
 
@@ -68,11 +66,5 @@ public abstract class Util {
 			System.out.println(e.getMessage());
 		}
 		return null;
-	}
-
-	public static String getDate(long timestamp) {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-		Date date = new Date(timestamp);
-		return format.format(date);
 	}
 }

@@ -7,9 +7,11 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.VBox;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Date;
 
 public class DatePickerDialog extends Dialog<Long>
 		implements EventHandler<ActionEvent> {
@@ -39,6 +41,12 @@ public class DatePickerDialog extends Dialog<Long>
 		// convert epoch seconds to milliseconds by multiplying it by 1000
 		this.setResult(epoch * 1000);
 		this.close();
+	}
+
+	public static String getDate(long timestamp) {
+		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+		Date date = new Date(timestamp);
+		return format.format(date);
 	}
 
 	public void setDate(long timestamp) {

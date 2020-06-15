@@ -2,10 +2,21 @@ package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.dto.NewEmployeeDto;
+import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 public class AddEmployeeContent extends AddEditEmployeeBase {
+
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		// show today's date on join-date button by default
+		textDate.setText(DatePickerDialog.getDate(System.currentTimeMillis()));
+	}
 
 	@Override
 	public void onSubmitBtnClick() {

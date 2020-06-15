@@ -47,6 +47,21 @@
 		alignment="CENTER"
 		spacing="15">
 
+		<HBox
+			spacing="15"
+			maxWidth="300">
+			<Label
+				text="Employee ID:"
+				maxHeight="Infinity"/>
+			<TextField
+				fx:id="textId"
+				HBox.hgrow="ALWAYS"
+				editable="false"
+				disable="true"
+				alignment="CENTER"
+				maxWidth="Infinity"/>
+		</HBox>
+
 		<TextField
 			fx:id="textName"
 			promptText="Enter Employee Name"

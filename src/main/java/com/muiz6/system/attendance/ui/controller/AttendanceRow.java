@@ -3,6 +3,7 @@ package com.muiz6.system.attendance.ui.controller;
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.Strings;
+import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,7 +43,7 @@ public class AttendanceRow implements Initializable {
 		_labelId.setText(Strings.PREFIX_EMPLOYEE_ID + _id);
 		_labelName.setText(Strings.PREFIX_EMPLOYEE_NAME + _name);
 		_labelJoinDate.setText(Strings.PREFIX_EMPLOYEE_JOIN_DATE
-				+ Util.getDate(_joinDate));
+				+ DatePickerDialog.getDate(_joinDate));
 		switch (_timeIn) {
 			case Constants.TIME_IN_ABSENT:
 				_btnAttendance.setText(Strings.TEXT_ABSENT);

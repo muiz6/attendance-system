@@ -3,6 +3,8 @@ package com.muiz6.system.attendance;
 import com.muiz6.system.attendance.dto.NewEmployeeDto;
 import com.muiz6.system.attendance.model.AttendanceItemModel;
 import com.muiz6.system.attendance.model.EmployeeItemModel;
+import com.muiz6.system.attendance.model.EmployeeModel;
+import jdk.internal.jline.internal.Nullable;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
@@ -102,7 +104,10 @@ public abstract class Repository {
 				 final PreparedStatement prepStmt2 = conn.prepareStatement(sql3)) {
 				rs.next();
 				final int id = rs.getInt("maxId");
-				prepStmt2.setLong(1, employee.getJoinDate());
+				final long epochMilliDate = LocalDate.now()
+						.atStartOfDay(ZoneId.systemDefault())
+						.toEpochSecond() * 1000;
+				prepStmt2.setLong(1, epochMilliDate); // today date at 12am
 				prepStmt2.setInt(2, id);
 				prepStmt2.setShort(3, employee.getTimeInMonday());
 				prepStmt2.setShort(4, employee.getTimeInTuesday());
@@ -217,6 +222,49 @@ public abstract class Repository {
 			System.out.println(e.getMessage());
 		}
 		return new ArrayList<>();
+	}
+
+	@Nullable
+	public static EmployeeModel getEmployee(int employeeId) {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT name, join_date FROM employees WHERE id=?;";
+		final String sql2 = "SELECT * FROM time_in WHERE id=?;";
+
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final PreparedStatement stmt = conn.prepareStatement(sql);
+			 final PreparedStatement stmt2 = conn.prepareStatement(sql2)) {
+			stmt.setInt(1, employeeId);
+			stmt2.setInt(1, employeeId);
+			EmployeeModel employee = new EmployeeModel();
+			try (final ResultSet rs = stmt.executeQuery();
+				 final ResultSet rs2 = stmt2.executeQuery()) {
+				rs.next();
+				rs2.next();
+				employee.setId(employeeId);
+				employee.setName(rs.getString("name"));
+				employee.setJoinDate(rs.getLong("join_date"));
+				employee.setTimeInMonday(rs2.getShort("monday"));
+				employee.setTimeInTuesday(rs2.getShort("tuesday"));
+				employee.setTimeInWednesday(rs2.getShort("wednesday"));
+				employee.setTimeInThursday(rs2.getShort("thursday"));
+				employee.setTimeInFriday(rs2.getShort("friday"));
+				employee.setTimeInSaturday(rs2.getShort("saturday"));
+				employee.setTimeInSunday(rs2.getShort("sunday"));
+				return employee;
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+
+	public static void updateEmployee(NewEmployeeDto employee) {
+
+	}
+
+	private static void _insertTimeIn(NewEmployeeDto employee) {
+
 	}
 
 	/**

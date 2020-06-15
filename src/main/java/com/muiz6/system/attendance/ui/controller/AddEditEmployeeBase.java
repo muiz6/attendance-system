@@ -1,5 +1,6 @@
 package com.muiz6.system.attendance.ui.controller;
 
+import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.ui.EmployeeItemEvent;
 import com.muiz6.system.attendance.ui.Strings;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
@@ -33,13 +34,58 @@ public abstract class AddEditEmployeeBase implements Initializable {
 	public TextField textDate;
 
 	@Override
-	public void initialize(URL location, ResourceBundle resources) {
+	public abstract void initialize(URL location, ResourceBundle resources);
 
-		// show today's date on join-date button by default
-		final DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
-		final Date date = new Date();
-		textDate.setText(format.format(date));
+	// call only on time-buttons
+	public static short getTime(TextField field) {
+		if (field.getText().equals(Strings.TEXT_HOLIDAY)) {
+			return Constants.TIME_IN_HOLIDAY;
+		}
+
+		// else
+		final String timeString = field.getText();
+		final int colonIndex = timeString.indexOf(':');
+		final int spaceIndex = timeString.indexOf(' ');
+		final String period = timeString.substring(spaceIndex + 1);
+		final int m = Integer
+				.parseInt(timeString.substring(colonIndex + 1, spaceIndex));
+		int h = Integer.parseInt(timeString.substring(0, colonIndex));
+		if (period.equals("am")) {
+			h %= 12;
+		}
+		else { // else period is pm
+			h = h % 12 + 12;
+		}
+		return (short) (h * 60 + m);
 	}
+
+	public static void setTime(short timeInMinutes, TextField btn) {
+		if (timeInMinutes == Constants.TIME_IN_HOLIDAY) {
+			btn.setText(Strings.TEXT_HOLIDAY);
+		}
+		else {
+			int h = timeInMinutes / 60;
+			h %= 12;
+			if (h == 0) {
+				h = 12;
+			}
+			final int m = timeInMinutes % 60;
+			String timeString = h + ":";
+			if (m < 10) {
+				timeString += "0" + m;
+			} else {
+				timeString += m;
+			}
+			if (timeInMinutes >= 720) {
+				timeString += " pm";
+			} else {
+				timeString += " am";
+			}
+			btn.setText(timeString);
+		}
+	}
+
+	public abstract void onSubmitBtnClick();
 
 	// handles back date buttons
 	public void onBtnClick(ActionEvent actionEvent) {
@@ -75,7 +121,7 @@ public abstract class AddEditEmployeeBase implements Initializable {
 
 		TimePickerDialog dialog = new TimePickerDialog();
 		final short time = getTime(source);
-		if (time == -1) { // holiday
+		if (time == Constants.TIME_IN_HOLIDAY) {
 			dialog.setHolidayCheckboxSelected(true);
 			dialog.setTime((short) 0);
 		}
@@ -95,72 +141,15 @@ public abstract class AddEditEmployeeBase implements Initializable {
 					textTimeFriday,
 					textTimeSaturday,
 					textTimeSunday};
-			if (result == -1) {
-				for (final TextField textTime: textTimeArr) {
-					textTime.setText(Strings.TEXT_HOLIDAY);
-				}
-			}
-			else {
-				for (final TextField textTime: textTimeArr) {
-					_setTime(result, textTime);
-				}
+			for (final TextField textTime: textTimeArr) {
+				setTime(result, textTime);
 			}
 		}
 		else {
 
-			// result can only be -1 for time in buttons as mark holiday
-			if (result == -1) {
-				source.setText(Strings.TEXT_HOLIDAY);
-			} else {
-				_setTime(dialog.getResult(), source);
-			}
+			// mark clicked btn only
+			setTime(dialog.getResult(), source);
 		}
-	}
-
-	// call only on time-buttons
-	public short getTime(TextField field) {
-		if (field.getText().equals(Strings.TEXT_HOLIDAY)) {
-			return -1; // -1 marks holiday state
-		}
-
-		// else
-		final String timeString = field.getText();
-		final int colonIndex = timeString.indexOf(':');
-		final int spaceIndex = timeString.indexOf(' ');
-		final String period = timeString.substring(spaceIndex + 1);
-		final int m = Integer
-				.parseInt(timeString.substring(colonIndex + 1, spaceIndex));
-		int h = Integer.parseInt(timeString.substring(0, colonIndex));
-		if (period.equals("am")) {
-			h %= 12;
-		}
-		else { // else period is pm
-			h = h % 12 + 12;
-		}
-		return (short) (h * 60 + m);
-	}
-
-	private void _setTime(short timeInMinutes, TextField btn) {
-		int h = timeInMinutes / 60;
-		h %= 12;
-		if (h == 0) {
-			h = 12;
-		}
-		final int m = timeInMinutes % 60;
-		String timeString = h + ":";
-		if (m < 10) {
-			timeString += "0" + m;
-		}
-		else {
-			timeString += m;
-		}
-		if (timeInMinutes >= 720) {
-			timeString += " pm";
-		}
-		else {
-			timeString += " am";
-		}
-		btn.setText(timeString);
 	}
 
 	public long getTextDateEpoch() {
@@ -176,6 +165,4 @@ public abstract class AddEditEmployeeBase implements Initializable {
 		// else
 		return 0;
 	}
-
-	public abstract void onSubmitBtnClick();
 }
