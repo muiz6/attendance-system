@@ -43,7 +43,9 @@
 		spacing="15"/>
 
 	<Button
+		fx:id="btnAdd"
 		maxWidth="Infinity"
-		text="Add"/>
+		text="Add"
+		onAction="#onAddBtnClick"/>
 
 </VBox>

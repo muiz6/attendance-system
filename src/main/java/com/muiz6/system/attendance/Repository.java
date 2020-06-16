@@ -338,7 +338,8 @@ public abstract class Repository {
 
 	public static ArrayList<Long> getHolidayList() {
 		final String url = _PATH_TO_DATA_BASE;
-		final String sql = "SELECT date FROM attendance WHERE time_in=-1;";
+		final String sql = "SELECT * FROM attendance" +
+				" GROUP BY date HAVING time_in=-1;";
 		try (final Connection conn = DriverManager.getConnection(url);
 			 final Statement stmt = conn.createStatement();
 			 final ResultSet rs =stmt.executeQuery(sql)) {
@@ -352,6 +353,52 @@ public abstract class Repository {
 			System.out.println(e.getMessage());
 		}
 		return new ArrayList<>();
+	}
+
+	/**
+	 * mark holiday for all employees for given date in attendance table.
+	 */
+	public static void markHoliday(long timestamp) {
+		new Thread(() -> {
+			final String url =_PATH_TO_DATA_BASE;
+			final String sql = "SELECT * FROM attendance WHERE date=?;";
+			try (final Connection conn = DriverManager.getConnection(url);
+				 final PreparedStatement stmt = conn.prepareStatement(sql)) {
+				stmt.setLong(1, timestamp);
+				try (final ResultSet rs = stmt.executeQuery()) {
+					if (rs.next()) { // date already exists
+						final String sql2 = "UPDATE attendance" +
+								" SET time_in=-1 WHERE date=?";
+						try (final PreparedStatement stmt2 =
+									 conn.prepareStatement(sql2)) {
+							stmt2.setLong(1, timestamp);
+							stmt2.execute();
+						}
+					}
+					else {
+						final String sql2 = "INSERT INTO attendance VALUES(?, ?, ?);";
+						final String sql3 = "SELECT id FROM employees WHERE active=1;";
+						try (final PreparedStatement stmt2 = conn.prepareStatement(sql2);
+							 final Statement stmt3 = conn.createStatement();
+							 final ResultSet rs2 = stmt3.executeQuery(sql3)) {
+							final ArrayList<Integer> empIds = new ArrayList<>();
+							while(rs2.next()) {
+								empIds.add(rs2.getInt("id"));
+							}
+							stmt2.setLong(1, timestamp);
+							stmt2.setShort(3, Constants.TIME_IN_HOLIDAY);
+							for (final int id: empIds) {
+								stmt2.setInt(2, id);
+								stmt2.execute();
+							}
+						}
+					}
+				}
+			}
+			catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}).start();
 	}
 
 	private static void _insertTimeInRecord(Connection conn,
