@@ -336,6 +336,24 @@ public abstract class Repository {
 		}).start();
 	}
 
+	public static ArrayList<Long> getHolidayList() {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT date FROM attendance WHERE time_in=-1;";
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final Statement stmt = conn.createStatement();
+			 final ResultSet rs =stmt.executeQuery(sql)) {
+			ArrayList<Long> result = new ArrayList<>();
+			while (rs.next()) {
+				result.add(rs.getLong("date"));
+			}
+			return result;
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return new ArrayList<>();
+	}
+
 	private static void _insertTimeInRecord(Connection conn,
 			NewEmployeeDto employee, int id) throws SQLException {
 		final String sql = "INSERT INTO time_in VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";

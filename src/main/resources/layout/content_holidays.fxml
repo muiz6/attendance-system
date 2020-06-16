@@ -6,9 +6,44 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane
+<?import javafx.geometry.Insets?>
+<VBox
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.controller.HolidayContent">
-	<Label text="Manage Holidays"/>
-</GridPane>
+	fx:controller="com.muiz6.system.attendance.ui.controller.HolidayContent"
+	spacing="15">
+
+	<padding>
+		<Insets topRightBottomLeft="15"/>
+	</padding>
+
+	<GridPane>
+		<Label
+			text="Day"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="0"/>
+
+		<Label
+			text="Date"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="1"/>
+
+		<columnConstraints>
+			<ColumnConstraints
+				percentWidth="40"
+				halignment="CENTER"/>
+			<ColumnConstraints
+				percentWidth="60"
+				halignment="CENTER"/>
+		</columnConstraints>
+	</GridPane>
+
+	<VBox
+		fx:id="rowContainer"
+		spacing="15"/>
+
+	<Button
+		maxWidth="Infinity"
+		text="Add"/>
+
+</VBox>
