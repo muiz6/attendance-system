@@ -1,9 +1,11 @@
 package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
+import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.ui.Strings;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
+import com.muiz6.system.attendance.ui.control.TimePickerDialog;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -62,7 +64,8 @@ public class AttendanceRow implements Initializable {
 
 		// button is just pressed and selected
 		if (_btnAttendance.isSelected()) {
-			_btnAttendance.setText("P");
+			Repository.markAttendance(_id, TimePickerDialog.currentTime());
+			_btnAttendance.setText(Strings.TEXT_PRESENT);
 		}
 		else {
 			String msg = MessageFormat.format("Mark Absent of {0}?",
@@ -76,7 +79,8 @@ public class AttendanceRow implements Initializable {
 			alert.showAndWait();
 
 			if (alert.getResult() == ButtonType.YES) {
-				_btnAttendance.setText("A");
+				Repository.markAttendance(_id, Constants.TIME_IN_ABSENT);
+				_btnAttendance.setText(Strings.TEXT_ABSENT);
 			}
 			else {
 				// restore state

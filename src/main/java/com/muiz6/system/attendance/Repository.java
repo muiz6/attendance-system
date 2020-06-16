@@ -127,7 +127,7 @@ public abstract class Repository {
 	public static void markEmployeeAbsentAll() {
 		final long epochMilliDate = LocalDate.now()
 				.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
-		final String sql = "SELECT id FROM employees;";
+		final String sql = "SELECT id FROM employees WHERE active=1;";
 		final String sql2 = "SELECT id FROM attendance WHERE date=?;";
 		final String sql3 = "INSERT INTO attendance VALUES (?, ?, ?);";
 
@@ -308,6 +308,26 @@ public abstract class Repository {
 			try (final Connection conn = DriverManager.getConnection(url);
 				 final PreparedStatement stmt = conn.prepareStatement(sql)) {
 				stmt.setInt(1, id);
+				stmt.execute();
+			}
+			catch (SQLException e) {
+				System.out.println(e.getMessage());
+			}
+		}).start();
+	}
+
+	public static void markAttendance(int id, short timeIn) {
+		new Thread(() -> {
+			final String url = _PATH_TO_DATA_BASE;
+			final String sql = "UPDATE attendance SET time_in=?" +
+					" WHERE date=? AND id=?;";
+			try (final Connection conn = DriverManager.getConnection(url);
+				 final PreparedStatement stmt = conn.prepareStatement(sql)) {
+				final long epochMilliToday = LocalDate.now()
+						.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
+				stmt.setShort(1, timeIn);
+				stmt.setLong(2, epochMilliToday);
+				stmt.setInt(3, id);
 				stmt.execute();
 			}
 			catch (SQLException e) {

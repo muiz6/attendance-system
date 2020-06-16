@@ -7,6 +7,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Dialog;
 import javafx.util.Pair;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class TimePickerDialog extends Dialog<Short> {
 
 	private final TimePicker _controller;
@@ -18,6 +21,17 @@ public class TimePickerDialog extends Dialog<Short> {
 						c -> new TimePicker(this));
 		this.getDialogPane().setContent(pair.getKey());
 		_controller = pair.getValue();
+	}
+
+	/**
+	 * @return current time in number of minutes since start of day
+	 */
+	public static short currentTime() {
+		Date date = new Date();
+		int h = Integer.parseInt(new SimpleDateFormat("HH").format(date));
+		int m = Integer.parseInt(new SimpleDateFormat("mm").format(date));
+		short time = (short) (h * 60 + m);
+		return time;
 	}
 
 	/**
