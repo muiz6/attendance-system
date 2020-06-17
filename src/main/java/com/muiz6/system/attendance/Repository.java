@@ -417,7 +417,9 @@ public abstract class Repository {
 						}
 					}
 				}
-				callback.onCompletion(true);
+				Platform.runLater(() -> {
+					callback.onCompletion(true);
+				});
 			}
 			catch (SQLException e) {
 				System.out.println(e.getMessage());
