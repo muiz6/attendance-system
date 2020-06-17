@@ -7,6 +7,8 @@
 <?import javafx.scene.layout.*?>
 
 <?import javafx.geometry.Insets?>
+<?import com.muiz6.system.attendance.ui.control.TabButton?>
+
 <VBox
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
@@ -41,6 +43,21 @@
 	<ListView
 		VBox.vgrow="ALWAYS"
 		fx:id="rowContainer"/>
+
+	<ScrollPane
+		fx:id="scrollPane"
+		vbarPolicy="NEVER"
+		fitToHeight="true">
+		<HBox
+			fx:id="tabContainer"
+			minWidth="${scrollPane.width}"
+			alignment="CENTER">
+			<TabButton
+				fx:id="btnTab1"
+				text="1"
+				selected="true"/>
+		</HBox>
+	</ScrollPane>
 
 	<Button
 		fx:id="btnAdd"

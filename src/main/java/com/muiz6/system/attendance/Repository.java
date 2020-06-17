@@ -337,16 +337,19 @@ public abstract class Repository {
 		}).start();
 	}
 
-	public static ArrayList<Long> getHolidayList() {
+	public static ArrayList<Long> getHolidayList(int page) {
 		final String url = _PATH_TO_DATA_BASE;
 		final String sql = "SELECT * FROM attendance" +
-				" GROUP BY date HAVING time_in=-1;";
+				" GROUP BY date HAVING time_in=-1 ORDER BY date DESC" +
+				" LIMIT 50 OFFSET ?;";
 		try (final Connection conn = DriverManager.getConnection(url);
-			 final Statement stmt = conn.createStatement();
-			 final ResultSet rs =stmt.executeQuery(sql)) {
+			 final PreparedStatement stmt = conn.prepareStatement(sql)) {
+			stmt.setInt(1, (page - 1) * 50);
 			ArrayList<Long> result = new ArrayList<>();
-			while (rs.next()) {
-				result.add(rs.getLong("date"));
+			try (final ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					result.add(rs.getLong("date"));
+				}
 			}
 			return result;
 		}
@@ -356,10 +359,29 @@ public abstract class Repository {
 		return new ArrayList<>();
 	}
 
+	public static int getHolidayTotalCount() {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT COUNT(*) AS total FROM" +
+				" (SELECT * FROM attendance GROUP BY date HAVING time_in=-1)";
+		int result = 0;
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final Statement stmt = conn.createStatement();
+			 final ResultSet rs = stmt.executeQuery(sql)) {
+			while(rs.next()) {
+				result += rs.getInt("total");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return result;
+	}
+
 	/**
 	 * mark holiday for all employees for given date in attendance table.
 	 */
-	public static void markHoliday(long timestamp) {
+	public static void markHoliday(long timestamp,
+			OnCompletionCallback callback) {
 		new Thread(() -> {
 			final String url =_PATH_TO_DATA_BASE;
 			final String sql = "SELECT * FROM attendance WHERE date=?;";
@@ -395,6 +417,7 @@ public abstract class Repository {
 						}
 					}
 				}
+				callback.onCompletion(true);
 			}
 			catch (SQLException e) {
 				System.out.println(e.getMessage());
