@@ -221,7 +221,8 @@ public abstract class Repository {
 	public static EmployeeModel getEmployee(int employeeId) {
 		final String url = _PATH_TO_DATA_BASE;
 		final String sql = "SELECT name, join_date FROM employees WHERE id=?;";
-		final String sql2 = "SELECT * FROM time_in WHERE id=?;";
+		final String sql2 = "SELECT * FROM time_in WHERE id=?" +
+				" ORDER BY date DESC LIMIT 1;";
 
 		try (final Connection conn = DriverManager.getConnection(url);
 			 final PreparedStatement stmt = conn.prepareStatement(sql);
