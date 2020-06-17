@@ -38,6 +38,9 @@ public class AddEmployeeContent extends AddEditEmployeeBase {
 				alert.setTitle("Success");
 				alert.setHeaderText(null);
 				alert.showAndWait();
+
+				// mark inserted employee absent for today
+				Repository.markEmployeeAbsentAll();
 			}
 			else {
 				final Alert alert = new Alert(Alert.AlertType.WARNING,

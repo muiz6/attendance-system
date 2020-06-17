@@ -2,7 +2,8 @@ package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Util;
-import com.muiz6.system.attendance.ui.EmployeeItemEvent;
+import com.muiz6.system.attendance.ui.event.EmployeeItemEvent;
+import com.muiz6.system.attendance.ui.event.NavigationContentEvent;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,6 +33,16 @@ public class NavigationPanel implements Initializable,
 		_stackPane.getChildren().add(Util
 				.getFxmlNode(Constants.RES_FXML_CONTENT_ATTENDANCE));
 		_stackPane.addEventFilter(EmployeeItemEvent.CUSTOM, this);
+		_stackPane.addEventFilter(NavigationContentEvent.UPDATE_EVENT,
+				e -> {
+					if (e.getContentType() ==
+							NavigationContentEvent.TYPE_HOLIDAY_CONTENT) {
+						_stackPane.getChildren().clear();
+						_stackPane.getChildren().add(Util
+								.getFxmlNode(
+										Constants.RES_FXML_CONTENT_HOLIDAYS));
+					}
+				});
 	}
 
 	public void onTabClick(ActionEvent actionEvent) {

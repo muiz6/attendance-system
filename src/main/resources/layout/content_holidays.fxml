@@ -38,9 +38,9 @@
 		</columnConstraints>
 	</GridPane>
 
-	<VBox
-		fx:id="rowContainer"
-		spacing="15"/>
+	<ListView
+		VBox.vgrow="ALWAYS"
+		fx:id="rowContainer"/>
 
 	<Button
 		fx:id="btnAdd"

@@ -1,4 +1,4 @@
-package com.muiz6.system.attendance.ui;
+package com.muiz6.system.attendance.ui.event;
 
 import javafx.event.Event;
 import javafx.event.EventType;

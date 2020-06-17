@@ -1,7 +1,7 @@
 package com.muiz6.system.attendance.ui.controller;
 
 import com.muiz6.system.attendance.Constants;
-import com.muiz6.system.attendance.ui.EmployeeItemEvent;
+import com.muiz6.system.attendance.ui.event.EmployeeItemEvent;
 import com.muiz6.system.attendance.ui.Strings;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import com.muiz6.system.attendance.ui.control.TimePickerDialog;

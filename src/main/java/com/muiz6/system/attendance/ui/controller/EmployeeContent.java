@@ -4,7 +4,7 @@ import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.EmployeeItemModel;
-import com.muiz6.system.attendance.ui.EmployeeItemEvent;
+import com.muiz6.system.attendance.ui.event.EmployeeItemEvent;
 import com.muiz6.system.attendance.ui.Strings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
