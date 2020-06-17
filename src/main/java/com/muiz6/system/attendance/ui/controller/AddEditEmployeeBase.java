@@ -109,10 +109,12 @@ public abstract class AddEditEmployeeBase implements Initializable {
 			dialog.setDate(getTextDateEpoch());
 			dialog.showAndWait();
 			long epoch = dialog.getResult();
-			final Date date = new Date();
-			date.setTime(epoch);
-			final String str = format.format(date);
-			textDate.setText(str);
+			if (epoch != DatePickerDialog.CANCELLED) {
+				final Date date = new Date();
+				date.setTime(epoch);
+				final String str = format.format(date);
+				textDate.setText(str);
+			}
 		}
 	}
 

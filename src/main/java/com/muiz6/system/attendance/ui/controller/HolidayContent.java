@@ -62,20 +62,22 @@ public class HolidayContent implements Initializable {
 		dialog.setDate(System.currentTimeMillis());
 		dialog.showAndWait();
 		long selectedDate = dialog.getResult();
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-				"This action cannot be undone!",
-				ButtonType.YES,
-				ButtonType.NO);
-		alert.setHeaderText(MessageFormat.format("Mark {0} as holiday?",
-				DatePickerDialog.getDate(selectedDate)));
-		alert.showAndWait();
-		if (alert.getResult() == ButtonType.YES) {
-			Repository.markHoliday(selectedDate, success -> {
-				if (success) {
-					rowContainer.fireEvent(new NavigationContentEvent(
-							NavigationContentEvent.TYPE_HOLIDAY_CONTENT));
-				}
-			});
+		if (selectedDate != DatePickerDialog.CANCELLED) {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+					"This action cannot be undone!",
+					ButtonType.YES,
+					ButtonType.NO);
+			alert.setHeaderText(MessageFormat.format("Mark {0} as holiday?",
+					DatePickerDialog.getDate(selectedDate)));
+			alert.showAndWait();
+			if (alert.getResult() == ButtonType.YES) {
+				Repository.markHoliday(selectedDate, success -> {
+					if (success) {
+						rowContainer.fireEvent(new NavigationContentEvent(
+								NavigationContentEvent.TYPE_HOLIDAY_CONTENT));
+					}
+				});
+			}
 		}
 	}
 
