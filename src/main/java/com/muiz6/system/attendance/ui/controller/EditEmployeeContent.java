@@ -67,22 +67,21 @@ public class EditEmployeeContent extends AddEditEmployeeBase {
 		employee.setTimeInSaturday(getTime(textTimeSaturday));
 		employee.setTimeInSunday(getTime(textTimeSunday));
 		Repository.updateEmployee(employee, (success) -> {
+			final Alert alert;
 			if (success) {
-				final Alert alert = new Alert(Alert.AlertType.INFORMATION,
+				alert = new Alert(Alert.AlertType.INFORMATION,
 						"Employee Updated Successfully",
 						ButtonType.OK);
 				alert.setTitle("Success");
-				alert.setHeaderText(null);
-				alert.showAndWait();
 			}
 			else {
-				final Alert alert = new Alert(Alert.AlertType.WARNING,
+				alert = new Alert(Alert.AlertType.WARNING,
 						"Something went wrong!",
 						ButtonType.OK);
 				alert.setTitle("Failure");
-				alert.setHeaderText(null);
-				alert.showAndWait();
 			}
+			alert.setHeaderText(null);
+			alert.showAndWait();
 		});
 	}
 

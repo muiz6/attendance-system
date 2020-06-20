@@ -17,12 +17,13 @@ public abstract class Util {
 		// get gradle resource
 		final URL fxmlResource = ClassLoader.getSystemClassLoader()
 				.getResource(resource);
-		try {
-			final Node node = FXMLLoader.load(fxmlResource);
-			return node;
-		}
-		catch (IOException e) {
-			System.out.println(e.getMessage());
+		if (fxmlResource != null) {
+			try {
+				return FXMLLoader.load(fxmlResource);
+			}
+			catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		return null;
 	}

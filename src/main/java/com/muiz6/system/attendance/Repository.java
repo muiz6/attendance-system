@@ -108,15 +108,11 @@ public abstract class Repository {
 					final int id = rs.getInt("maxId");
 					_insertTimeInRecord(conn, employee, id);
 				}
-				Platform.runLater(() -> {
-					callback.onCompletion(true);
-				});
+				Platform.runLater(() -> callback.onCompletion(true));
 			}
 			catch (SQLException e) {
 				System.out.println(e.getMessage());
-				Platform.runLater(() -> {
-					callback.onCompletion(false);
-				});
+				Platform.runLater(() -> callback.onCompletion(false));
 			}
 		}).start();
 	}
@@ -291,15 +287,11 @@ public abstract class Repository {
 						_insertTimeInRecord(conn, employee, employee.getId());
 					}
 				}
-				Platform.runLater(() -> {
-					callback.onCompletion(true);
-				});
+				Platform.runLater(() -> callback.onCompletion(true));
 			}
 			catch (SQLException e) {
 				System.out.println(e.getMessage());
-				Platform.runLater(() -> {
-					callback.onCompletion(false);
-				});
+				Platform.runLater(() -> callback.onCompletion(false));
 			}
 		}).start();
 	}
@@ -440,7 +432,7 @@ public abstract class Repository {
 			 final PreparedStatement pStmt2 = conn.prepareStatement(sql2)) {
 			pStmt.setInt(1, employeeId);
 
-			// store time in table in memory to use with attendance table
+			// store time_in table in memory to use with attendance table
 			ArrayList<TimeInRowDto> timeInTable = new ArrayList<>();
 			try (final ResultSet timeInRs = pStmt.executeQuery()) {
 				while (timeInRs.next()) {
@@ -527,7 +519,8 @@ public abstract class Repository {
 	}
 
 	private static void _insertTimeInRecord(Connection conn,
-			NewEmployeeDto employee, int id) throws SQLException {
+			NewEmployeeDto employee,
+			int id) throws SQLException {
 		final String sql = "INSERT INTO time_in VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		final PreparedStatement prepStmt = conn.prepareStatement(sql);
 

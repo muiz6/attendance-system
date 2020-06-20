@@ -2,6 +2,8 @@ package com.muiz6.system.attendance;
 
 public class Constants {
 
+	public static final String RES_FXML_PANEL_NAVIGATION =
+			"layout/panel_navigation.fxml";
 	public static final String RES_FXML_CONTENT_ATTENDANCE =
 			"layout/content_attendance.fxml";
 	public static final String RES_FXML_CONTENT_EMPLOYEES =

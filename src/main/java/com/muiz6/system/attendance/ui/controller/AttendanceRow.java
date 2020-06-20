@@ -59,31 +59,32 @@ public class AttendanceRow implements Initializable {
 		}
 	}
 
-	public void onAttendanceBtnClick(ActionEvent actionEvent) {
-
-		// button is just pressed and selected
-		if (_btnAttendance.isSelected()) {
-			Repository.markAttendance(_id, TimePickerDialog.currentTime());
-			_btnAttendance.setText(Strings.TEXT_PRESENT);
-		}
-		else {
-			String msg = MessageFormat.format("Mark Absent of {0}?",
-					_name);
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-					msg,
-					ButtonType.NO,
-					ButtonType.YES);
-			alert.setTitle("Mark Absent");
-			alert.setHeaderText(null);
-			alert.showAndWait();
-
-			if (alert.getResult() == ButtonType.YES) {
-				Repository.markAttendance(_id, Constants.TIME_IN_ABSENT);
-				_btnAttendance.setText(Strings.TEXT_ABSENT);
+	public void onAttendanceBtnClick(ActionEvent event) {
+		if (event.getSource() == _btnAttendance) {
+			// button is just pressed and selected
+			if (_btnAttendance.isSelected()) {
+				Repository.markAttendance(_id, TimePickerDialog.currentTime());
+				_btnAttendance.setText(Strings.TEXT_PRESENT);
 			}
 			else {
-				// restore state
-				_btnAttendance.setSelected(true);
+				String msg = MessageFormat.format("Mark Absent of {0}?",
+						_name);
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+						msg,
+						ButtonType.NO,
+						ButtonType.YES);
+				alert.setTitle("Mark Absent");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+
+				if (alert.getResult() == ButtonType.YES) {
+					Repository.markAttendance(_id, Constants.TIME_IN_ABSENT);
+					_btnAttendance.setText(Strings.TEXT_ABSENT);
+				}
+				else {
+					// restore state
+					_btnAttendance.setSelected(true);
+				}
 			}
 		}
 	}

@@ -19,6 +19,8 @@ public class TimePickerDialog extends Dialog<Short> {
 		final Pair<Node, TimePicker> pair =
 				Util.getFxmlNodeAndController(Constants.RES_FXML_TIME_PICKER,
 						c -> new TimePicker(this));
+
+		// nothing can be done about the possible NPE here ;3
 		this.getDialogPane().setContent(pair.getKey());
 		_controller = pair.getValue();
 	}

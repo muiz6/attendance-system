@@ -17,9 +17,9 @@ public class EmployeeAttendanceRow implements Initializable {
 	public Label labelTimeIn;
 	public Label labelTimeInExpected;
 
-	private long _date;
-	private short _timeIn;
-	private short _timeInExpected;
+	private final long _date;
+	private final short _timeIn;
+	private final short _timeInExpected;
 
 	public EmployeeAttendanceRow(long date, short timeIn, short timeInExpected) {
 		_date = date;
