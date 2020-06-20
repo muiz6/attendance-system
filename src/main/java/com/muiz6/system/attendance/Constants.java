@@ -20,6 +20,8 @@ public class Constants {
 			"layout/row_attendance.fxml";
 	public static final String RES_FXML_ROW_HOLIDAY =
 			"layout/row_holiday.fxml";
+	public static final String RES_FXML_ROW_EMPLOYEE_ATTENDANCE =
+			"layout/row_employee_attendance.fxml";
 	public static final String RES_FXML_TIME_PICKER =
 			"layout/time_picker.fxml";
 

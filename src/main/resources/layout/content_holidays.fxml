@@ -51,7 +51,8 @@
 		<HBox
 			fx:id="tabContainer"
 			minWidth="${scrollPane.width}"
-			alignment="CENTER">
+			alignment="CENTER"
+			spacing="5">
 			<TabButton
 				fx:id="btnTab1"
 				text="1"

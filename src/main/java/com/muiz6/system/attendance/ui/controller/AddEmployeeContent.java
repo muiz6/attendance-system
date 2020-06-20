@@ -15,7 +15,7 @@ public class AddEmployeeContent extends AddEditEmployeeBase {
 	public void initialize(URL location, ResourceBundle resources) {
 
 		// show today's date on join-date button by default
-		textDate.setText(DatePickerDialog.getDate(System.currentTimeMillis()));
+		textDate.setText(DatePickerDialog.getDateString(System.currentTimeMillis()));
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class HolidayRow implements Initializable {
 	private final String _day;
 
 	public HolidayRow(long timestamp) {
-		_date = DatePickerDialog.getDate(timestamp);
+		_date = DatePickerDialog.getDateString(timestamp);
 		_day = new SimpleDateFormat("EEEE").format(new Date(timestamp));
 	}
 

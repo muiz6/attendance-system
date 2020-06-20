@@ -68,7 +68,7 @@ public class HolidayContent implements Initializable {
 					ButtonType.YES,
 					ButtonType.NO);
 			alert.setHeaderText(MessageFormat.format("Mark {0} as holiday?",
-					DatePickerDialog.getDate(selectedDate)));
+					DatePickerDialog.getDateString(selectedDate)));
 			alert.showAndWait();
 			if (alert.getResult() == ButtonType.YES) {
 				Repository.markHoliday(selectedDate, success -> {

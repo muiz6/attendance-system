@@ -1,7 +1,9 @@
 package com.muiz6.system.attendance;
 
 import com.muiz6.system.attendance.dto.NewEmployeeDto;
+import com.muiz6.system.attendance.dto.TimeInRowDto;
 import com.muiz6.system.attendance.model.AttendanceItemModel;
+import com.muiz6.system.attendance.model.EmployeeAttendanceItemModel;
 import com.muiz6.system.attendance.model.EmployeeItemModel;
 import com.muiz6.system.attendance.model.EmployeeModel;
 import javafx.application.Platform;
@@ -425,6 +427,103 @@ public abstract class Repository {
 				System.out.println(e.getMessage());
 			}
 		}).start();
+	}
+
+	public static ArrayList<EmployeeAttendanceItemModel>
+			getEmployeeAttendanceList(int employeeId, int page) {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT * FROM time_in WHERE id=? ORDER BY date DESC;";
+		final String sql2 = "SELECT date, time_in FROM attendance WHERE id=?" +
+				" ORDER BY date DESC LIMIT 50 OFFSET ?;";
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final PreparedStatement pStmt = conn.prepareStatement(sql);
+			 final PreparedStatement pStmt2 = conn.prepareStatement(sql2)) {
+			pStmt.setInt(1, employeeId);
+
+			// store time in table in memory to use with attendance table
+			ArrayList<TimeInRowDto> timeInTable = new ArrayList<>();
+			try (final ResultSet timeInRs = pStmt.executeQuery()) {
+				while (timeInRs.next()) {
+					TimeInRowDto row = new TimeInRowDto();
+					row.setId(timeInRs.getInt("id"));
+					row.setDate(timeInRs.getLong("date"));
+					row.setTimeInMonday(timeInRs.getShort("monday"));
+					row.setTimeInTuesday(timeInRs.getShort("tuesday"));
+					row.setTimeInWednesday(timeInRs.getShort("wednesday"));
+					row.setTimeInThursday(timeInRs.getShort("thursday"));
+					row.setTimeInFriday(timeInRs.getShort("friday"));
+					row.setTimeInSaturday(timeInRs.getShort("saturday"));
+					row.setTimeInSunday(timeInRs.getShort("sunday"));
+					timeInTable.add(row);
+				}
+			}
+
+			pStmt2.setInt(1, employeeId);
+			pStmt2.setInt(2, (page - 1) * 50);
+			ArrayList<EmployeeAttendanceItemModel> result = new ArrayList<>();
+			try (final ResultSet attendanceRs = pStmt2.executeQuery()) {
+				int i = 0;
+				while (attendanceRs.next()) {
+					EmployeeAttendanceItemModel model =
+							new EmployeeAttendanceItemModel();
+					final long epochMilliDate = attendanceRs.getLong("date");
+					model.setDate(epochMilliDate);
+					model.setTimeIn(attendanceRs.getShort("time_in"));
+					while (timeInTable.get(i).getDate() > epochMilliDate
+							&& i < timeInTable.size() - 1) {
+						i++;
+					}
+					final String weekday = new SimpleDateFormat("EEEE")
+							.format(new Date(epochMilliDate)).toLowerCase();
+					TimeInRowDto row = timeInTable.get(i);
+					switch (weekday) {
+						case "monday":
+							model.setExpectedTimeIn(row.getTimeInMonday());
+							break;
+						case "tuesday":
+							model.setExpectedTimeIn(row.getTimeInTuesday());
+							break;
+						case "wednesday":
+							model.setExpectedTimeIn(row.getTimeInWednesday());
+							break;
+						case "thursday":
+							model.setExpectedTimeIn(row.getTimeInThursday());
+							break;
+						case "friday":
+							model.setExpectedTimeIn(row.getTimeInFriday());
+							break;
+						case "saturday":
+							model.setExpectedTimeIn(row.getTimeInSaturday());
+							break;
+						case "sunday":
+							model.setExpectedTimeIn(row.getTimeInSunday());
+					}
+					result.add(model);
+				}
+			}
+			return result;
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return new ArrayList<>();
+	}
+
+	public static int getEmployeeAttendanceCount(int employeeId) {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT COUNT(*) AS count FROM attendance" +
+				" WHERE id=?;";
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final PreparedStatement pStmt = conn.prepareStatement(sql)) {
+			pStmt.setInt(1, employeeId);
+			try (ResultSet rs = pStmt.executeQuery()) {
+				return rs.getInt("count");
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return 0;
 	}
 
 	private static void _insertTimeInRecord(Connection conn,

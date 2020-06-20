@@ -39,7 +39,7 @@ public class EmployeeRow implements Initializable {
 		_labelId.setText(Strings.PREFIX_EMPLOYEE_ID + _id);
 		_labelName.setText(Strings.PREFIX_EMPLOYEE_NAME + _name);
 		_labelJoinDate.setText(Strings.PREFIX_EMPLOYEE_JOIN_DATE
-				+ DatePickerDialog.getDate(_joinDate));
+				+ DatePickerDialog.getDateString(_joinDate));
 	}
 
 	public void onBtnClick(ActionEvent actionEvent) {

@@ -1,14 +1,161 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<?import com.muiz6.system.attendance.ui.control.TabButton?>
 
 <VBox
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
 	fx:controller="com.muiz6.system.attendance.ui.controller.ViewEmployeeContent"
-	alignment="CENTER">
+	alignment="CENTER"
+	spacing="15">
 
-	<Label text="View Employee"/>
+	<padding>
+		<Insets topRightBottomLeft="15"/>
+	</padding>
+
+	<HBox>
+		<Button
+			fx:id="btnBack"
+			text="Back"
+			onAction="#onBtnClick"/>
+
+		<Label
+			text="View Employee"
+			alignment="CENTER"
+			HBox.hgrow="ALWAYS"
+			maxWidth="Infinity"/>
+	</HBox>
+
+	<GridPane vgap="5">
+
+		<Label
+			text="ID:"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="0"/>
+		<Label
+			fx:id="labelId"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="1"/>
+
+		<Label
+			text="Name:"
+			GridPane.rowIndex="1"
+			GridPane.columnIndex="0"/>
+		<Label
+			fx:id="labelName"
+			GridPane.rowIndex="1"
+			GridPane.columnIndex="1"/>
+
+		<Label
+			text="Join Date:"
+			GridPane.rowIndex="2"
+			GridPane.columnIndex="0"/>
+		<Label
+			fx:id="labelJoinDate"
+			GridPane.rowIndex="2"
+			GridPane.columnIndex="1"/>
+
+		<Label
+			text="On Time %:"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="2"/>
+		<Label
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="3"/>
+
+		<Label
+			text="Late %:"
+			GridPane.rowIndex="1"
+			GridPane.columnIndex="2"/>
+		<Label
+			GridPane.rowIndex="1"
+			GridPane.columnIndex="3"/>
+
+		<Label
+			text="Absent %:"
+			GridPane.rowIndex="2"
+			GridPane.columnIndex="2"/>
+		<Label
+			GridPane.rowIndex="2"
+			GridPane.columnIndex="3"/>
+
+		<columnConstraints>
+			<ColumnConstraints
+				halignment="CENTER"
+				percentWidth="25"/>
+			<ColumnConstraints
+				halignment="CENTER"
+				percentWidth="25"/>
+			<ColumnConstraints
+				halignment="CENTER"
+				percentWidth="25"/>
+			<ColumnConstraints
+				halignment="CENTER"
+				percentWidth="25"/>
+		</columnConstraints>
+	</GridPane>
+
+	<VBox VBox.vgrow="ALWAYS">
+		<GridPane>
+			<Label
+				text="Date"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="0"/>
+
+			<Label
+				text="Weekday"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="1"/>
+
+			<Label
+				text="Time In"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="2"/>
+
+			<Label
+				text="Expected Time"
+				GridPane.rowIndex="0"
+				GridPane.columnIndex="3"/>
+
+			<columnConstraints>
+				<ColumnConstraints
+					halignment="CENTER"
+					percentWidth="25"/>
+				<ColumnConstraints
+					halignment="CENTER"
+					percentWidth="25"/>
+				<ColumnConstraints
+					halignment="CENTER"
+					percentWidth="25"/>
+				<ColumnConstraints
+					halignment="CENTER"
+					percentWidth="25"/>
+			</columnConstraints>
+		</GridPane>
+
+		<ListView
+			fx:id="rowContainer"
+			VBox.vgrow="ALWAYS"/>
+	</VBox>
+
+	<ScrollPane
+		fx:id="scrollPane"
+		vbarPolicy="NEVER"
+		fitToHeight="true">
+		<HBox
+			fx:id="tabContainer"
+			minWidth="${scrollPane.width}"
+			alignment="CENTER"
+			spacing="5">
+			<TabButton
+				fx:id="btnTab1"
+				text="1"
+				selected="true"/>
+		</HBox>
+	</ScrollPane>
 
 </VBox>

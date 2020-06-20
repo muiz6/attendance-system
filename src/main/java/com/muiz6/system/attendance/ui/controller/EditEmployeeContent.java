@@ -42,7 +42,7 @@ public class EditEmployeeContent extends AddEditEmployeeBase {
 		else {
 			textId.setText(Integer.toString(_employee.getId()));
 			textName.setText(_employee.getName());
-			textDate.setText(DatePickerDialog.getDate(_employee.getJoinDate()));
+			textDate.setText(DatePickerDialog.getDateString(_employee.getJoinDate()));
 			setTime(_employee.getTimeInMonday(), textTimeMonday);
 			setTime(_employee.getTimeInTuesday(), textTimeTuesday);
 			setTime(_employee.getTimeInWednesday(), textTimeWednesday);

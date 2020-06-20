@@ -54,7 +54,7 @@ public class DatePickerDialog extends Dialog<Long>
 		}
 	}
 
-	public static String getDate(long timestamp) {
+	public static String getDateString(long timestamp) {
 		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
 		Date date = new Date(timestamp);
 		return format.format(date);

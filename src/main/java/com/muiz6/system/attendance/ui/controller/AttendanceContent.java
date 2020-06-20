@@ -4,7 +4,6 @@ import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.AttendanceItemModel;
-import com.muiz6.system.attendance.model.EmployeeItemModel;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -27,7 +26,7 @@ public class AttendanceContent implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		_labelToday.setText(DatePickerDialog.getDate(System.currentTimeMillis()));
+		_labelToday.setText(DatePickerDialog.getDateString(System.currentTimeMillis()));
 
 		for (final AttendanceItemModel model : _employeeList) {
 			Node node = Util.getFxmlNode(Constants.RES_FXML_ROW_ATTENDANCE,
