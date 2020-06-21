@@ -8,6 +8,8 @@ import javafx.scene.control.Dialog;
 import javafx.util.Pair;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 public class TimePickerDialog extends Dialog<Short> {
@@ -36,16 +38,19 @@ public class TimePickerDialog extends Dialog<Short> {
 		return time;
 	}
 
+	public static Date getDate(short timeInMinutes) {
+		long milliseconds = timeInMinutes * 60000;
+		long startOfDay = LocalDate.now()
+				.atStartOfDay(ZoneId.systemDefault()).toEpochSecond() * 1000;
+		return new Date(startOfDay + milliseconds);
+	}
+
 	/**
 	 * set time of the day in minutes eg. 12:30pm will be 12*60 + 30 = 750 minutes
 	 * @param minutes: time in minutes
 	 */
 	public void setTime(short minutes) {
 		_controller.setTime(minutes);
-	}
-
-	public void disableHolidayCheckbox(boolean state) {
-		_controller.disableHolidayCheckbox(state);
 	}
 
 	public void setHolidayCheckboxSelected(boolean state) {

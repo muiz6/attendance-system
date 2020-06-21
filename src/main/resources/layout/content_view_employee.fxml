@@ -64,6 +64,7 @@
 			GridPane.rowIndex="0"
 			GridPane.columnIndex="2"/>
 		<Label
+			fx:id="labelOnTime"
 			GridPane.rowIndex="0"
 			GridPane.columnIndex="3"/>
 
@@ -72,6 +73,7 @@
 			GridPane.rowIndex="1"
 			GridPane.columnIndex="2"/>
 		<Label
+			fx:id="labelLate"
 			GridPane.rowIndex="1"
 			GridPane.columnIndex="3"/>
 
@@ -80,6 +82,7 @@
 			GridPane.rowIndex="2"
 			GridPane.columnIndex="2"/>
 		<Label
+			fx:id="labelAbsent"
 			GridPane.rowIndex="2"
 			GridPane.columnIndex="3"/>
 

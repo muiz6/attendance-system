@@ -2,10 +2,7 @@ package com.muiz6.system.attendance;
 
 import com.muiz6.system.attendance.dto.NewEmployeeDto;
 import com.muiz6.system.attendance.dto.TimeInRowDto;
-import com.muiz6.system.attendance.model.AttendanceItemModel;
-import com.muiz6.system.attendance.model.EmployeeAttendanceItemModel;
-import com.muiz6.system.attendance.model.EmployeeItemModel;
-import com.muiz6.system.attendance.model.EmployeeModel;
+import com.muiz6.system.attendance.model.*;
 import javafx.application.Platform;
 import jdk.internal.jline.internal.Nullable;
 
@@ -20,28 +17,28 @@ public abstract class Repository {
 
 	private static final String _PATH_TO_DATA_BASE = "jdbc:sqlite:data.db";
 	private static final String _SQL_CREATE_TABLE_EMPLOYEES =
-			"CREATE TABLE IF NOT EXISTS employees (\n" +
-					" id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
-					" name TINYTEXT NOT NULL,\n" +
-					" join_date BIGINT NOT NULL,\n" +
+			"CREATE TABLE IF NOT EXISTS employees (" +
+					" id INTEGER PRIMARY KEY AUTOINCREMENT," +
+					" name TINYTEXT NOT NULL," +
+					" join_date BIGINT NOT NULL," +
 					" active BIT NOT NULL DEFAULT (1));";
 	private static final String _SQL_CREATE_TABLE_TIME_IN =
 			"CREATE TABLE IF NOT EXISTS time_in (\n" +
-					" date BIGINT NOT NULL,\n" +
-					" id SMALLINT NOT NULL,\n" +
-					" monday SMALLINT NOT NULL,\n" +
-					" tuesday SMALLINT NOT NULL,\n" +
-					" wednesday SMALLINT NOT NULL,\n" +
-					" thursday SMALLINT NOT NULL,\n" +
-					" friday SMALLINT NOT NULL,\n" +
-					" saturday SMALLINT NOT NULL,\n" +
-					" sunday SMALLINT NOT NULL,\n" +
+					" date BIGINT NOT NULL," +
+					" id SMALLINT NOT NULL," +
+					" monday SMALLINT NOT NULL," +
+					" tuesday SMALLINT NOT NULL," +
+					" wednesday SMALLINT NOT NULL," +
+					" thursday SMALLINT NOT NULL," +
+					" friday SMALLINT NOT NULL," +
+					" saturday SMALLINT NOT NULL," +
+					" sunday SMALLINT NOT NULL," +
 					" PRIMARY KEY(date, id));";
 	private static final String _SQL_CREATE_TABLE_ATTENDANCE =
-			"CREATE TABLE IF NOT EXISTS attendance (\n" +
-					" date BIGINT NOT NULL,\n" +
-					" id SMALLINT NOT NULL,\n" +
-					" time_in SMALLINT NOT NULL,\n" +
+			"CREATE TABLE IF NOT EXISTS attendance (" +
+					" date BIGINT NOT NULL," +
+					" id SMALLINT NOT NULL," +
+					" time_in SMALLINT NOT NULL," +
 					" PRIMARY KEY(date, id));";
 
 	public static void initializeDataBase() {
@@ -516,6 +513,62 @@ public abstract class Repository {
 			System.out.println(e.getMessage());
 		}
 		return 0;
+	}
+
+	public static EmployeeStatModel getEmployeeStats(int employeeId) {
+		final String url = _PATH_TO_DATA_BASE;
+		final String sql = "SELECT * FROM attendance AS a" +
+				" LEFT JOIN time_in AS b" +
+				" ON a.date>=b.date AND a.id=b.id" +
+				" WHERE a.id=?;";
+		try (final Connection conn = DriverManager.getConnection(url);
+			 final PreparedStatement pStmt = conn.prepareStatement(sql)) {
+			pStmt.setInt(1, employeeId);
+			try (final ResultSet rs = pStmt.executeQuery()) {
+				final SimpleDateFormat format = new SimpleDateFormat("EEEE");
+				float countOnTime = 0, countLate = 0, countAbsent = 0;
+				float countTotal = 0;
+				while (rs.next()) {
+					final short timeIn = rs.getShort("time_in");
+					final String weekday = format
+							.format(new Date(rs.getLong("date")))
+							.toLowerCase();
+					final short timeInExpected = rs
+							.getShort(weekday);
+					if (timeIn != Constants.TIME_IN_HOLIDAY
+							&& timeInExpected != Constants.TIME_IN_HOLIDAY) {
+						if (timeIn == Constants.TIME_IN_ABSENT) {
+							countAbsent++;
+						}
+						else if (timeIn >= timeInExpected) {
+							countOnTime++;
+						}
+						else {
+							countLate++;
+						}
+						countTotal++;
+					}
+				}
+				final EmployeeStatModel stats = new EmployeeStatModel();
+				final byte percOnTime = (byte) (countOnTime / countTotal * 100);
+				final byte percLate = (byte) (countLate / countTotal * 100);
+				final byte percAbsent = (byte) (countAbsent / countTotal * 100);
+				stats.setPercentageOnTime(percOnTime);
+				stats.setPercentageLate(percLate);
+				stats.setPercentageAbsent(percAbsent);
+				return stats;
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+
+		// else
+		final EmployeeStatModel stats = new EmployeeStatModel();
+		stats.setPercentageOnTime((byte) 0);
+		stats.setPercentageLate((byte) 0);
+		stats.setPercentageAbsent((byte) 0);
+		return stats;
 	}
 
 	private static void _insertTimeInRecord(Connection conn,

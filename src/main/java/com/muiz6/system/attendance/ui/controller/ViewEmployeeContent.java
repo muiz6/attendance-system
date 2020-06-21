@@ -5,6 +5,7 @@ import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
 import com.muiz6.system.attendance.model.EmployeeAttendanceItemModel;
 import com.muiz6.system.attendance.model.EmployeeModel;
+import com.muiz6.system.attendance.model.EmployeeStatModel;
 import com.muiz6.system.attendance.ui.control.DatePickerDialog;
 import com.muiz6.system.attendance.ui.control.TabButton;
 import com.muiz6.system.attendance.ui.event.EmployeeItemEvent;
@@ -28,6 +29,9 @@ public class ViewEmployeeContent implements Initializable {
 	public Label labelJoinDate;
 	public Label labelName;
 	public Label labelId;
+	public Label labelAbsent;
+	public Label labelOnTime;
+	public Label labelLate;
 	public ListView<Node> rowContainer;
 
 	private final ToggleGroup _toggleGroup = new ToggleGroup();
@@ -64,7 +68,14 @@ public class ViewEmployeeContent implements Initializable {
 				tabContainer.getChildren().add(tab);
 			}
 
+			// load 1st tab's content at start
 			btnTab1.fireEvent(new ActionEvent());
+
+			final EmployeeStatModel empStat =
+					Repository.getEmployeeStats(_employee.getId());
+			labelOnTime.setText(Byte.toString(empStat.getPercentageOnTime()));
+			labelAbsent.setText(Byte.toString(empStat.getPercentageAbsent()));
+			labelLate.setText(Byte.toString(empStat.getPercentageLate()));
 		}
 		else {
 			final Alert alert = new Alert(Alert.AlertType.ERROR,
