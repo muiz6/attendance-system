@@ -2,6 +2,8 @@ package com.muiz6.system.attendance;
 
 public class Constants {
 
+	public static final String RES_FXML_PANEL_NAVIGATION =
+			"layout/panel_navigation.fxml";
 	public static final String RES_FXML_CONTENT_ATTENDANCE =
 			"layout/content_attendance.fxml";
 	public static final String RES_FXML_CONTENT_EMPLOYEES =
@@ -18,6 +20,13 @@ public class Constants {
 			"layout/row_employee.fxml";
 	public static final String RES_FXML_ROW_ATTENDANCE =
 			"layout/row_attendance.fxml";
+	public static final String RES_FXML_ROW_HOLIDAY =
+			"layout/row_holiday.fxml";
+	public static final String RES_FXML_ROW_EMPLOYEE_ATTENDANCE =
+			"layout/row_employee_attendance.fxml";
 	public static final String RES_FXML_TIME_PICKER =
 			"layout/time_picker.fxml";
+
+	public static final short TIME_IN_ABSENT = -2;
+	public static final short TIME_IN_HOLIDAY = -1;
 }

@@ -3,8 +3,8 @@ package com.muiz6.system.attendance.ui.controller;
 import com.muiz6.system.attendance.Constants;
 import com.muiz6.system.attendance.Repository;
 import com.muiz6.system.attendance.Util;
-import com.muiz6.system.attendance.model.EmployeeModel;
-import com.muiz6.system.attendance.ui.EmployeeItemEvent;
+import com.muiz6.system.attendance.model.EmployeeItemModel;
+import com.muiz6.system.attendance.ui.event.EmployeeItemEvent;
 import com.muiz6.system.attendance.ui.Strings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 
 public class EmployeeContent implements Initializable {
 
-	private final ArrayList<EmployeeModel> _employeeList =
+	private final ArrayList<EmployeeItemModel> _employeeList =
 			Repository.getEmployees();
 	private final Button _addButton = new Button(Strings.ADD_EMPLOYEE_BTN_TEXT);
 	@FXML
@@ -26,7 +26,7 @@ public class EmployeeContent implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		for (final EmployeeModel model : _employeeList) {
+		for (final EmployeeItemModel model : _employeeList) {
 			Node node = Util.getFxmlNode(Constants.RES_FXML_ROW_EMPLOYEE,
 					c -> new EmployeeRow(model.getId(),
 							model.getName(),

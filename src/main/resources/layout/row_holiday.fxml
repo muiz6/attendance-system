@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.*?>
+
+<GridPane
+	xmlns="http://javafx.com/javafx"
+	xmlns:fx="http://javafx.com/fxml"
+	fx:controller="com.muiz6.system.attendance.ui.controller.HolidayRow">
+
+	<Label
+		fx:id="labelDay"
+		text="-"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="0"/>
+
+	<Label
+		fx:id="labelDate"
+		text="-"
+		GridPane.rowIndex="0"
+		GridPane.columnIndex="1"/>
+
+	<columnConstraints>
+		<ColumnConstraints
+			percentWidth="40"
+			halignment="CENTER"/>
+		<ColumnConstraints
+			percentWidth="60"
+			halignment="CENTER"/>
+	</columnConstraints>
+
+</GridPane>

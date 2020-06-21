@@ -64,6 +64,13 @@
 		fx:id="_checkBoxMarkHoliday"
 		text="Mark Holiday"
 		onAction="#onCheckBoxClick"
+		GridPane.rowIndex="3"
+		GridPane.columnIndex="0"
+		GridPane.columnSpan="3"/>
+
+	<CheckBox
+		fx:id="_checkBoxMarkAll"
+		text="Mark for All"
 		GridPane.rowIndex="2"
 		GridPane.columnIndex="0"
 		GridPane.columnSpan="3"/>
@@ -72,7 +79,7 @@
 		fx:id="_btnOk"
 		text="OK"
 		prefWidth="100"
-		GridPane.rowIndex="3"
+		GridPane.rowIndex="4"
 		GridPane.columnIndex="0"
 		GridPane.columnSpan="3"
 		onAction="#onButtonClick"/>

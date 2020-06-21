@@ -1,4 +1,4 @@
-package com.muiz6.system.attendance.ui;
+package com.muiz6.system.attendance.ui.event;
 
 import javafx.event.Event;
 import javafx.event.EventType;
@@ -11,17 +11,17 @@ public class EmployeeItemEvent extends Event {
 	public static final int BUTTON_TYPE_EDIT_EMPLOYEE = 1;
 	public static final int BUTTON_TYPE_ADD_EMPLOYEE = 2;
 	public static final int BUTTON_TYPE_BACK = 3;
-	private final byte _id;
+	private final int _id;
 	private final int _buttonType;
 
-	public EmployeeItemEvent(byte id, int buttonType) {
+	public EmployeeItemEvent(int id, int buttonType) {
 		super(EmployeeItemEvent.CUSTOM);
 
 		_id = id;
 		_buttonType = buttonType;
 	}
 
-	public byte getEmployeeId() {
+	public int getEmployeeId() {
 		return _id;
 	}
 

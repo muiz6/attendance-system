@@ -1,93 +1,55 @@
 package com.muiz6.system.attendance.ui.controller;
 
-import com.muiz6.system.attendance.ui.EmployeeItemEvent;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.RadioButton;
+import com.muiz6.system.attendance.Repository;
+import com.muiz6.system.attendance.dto.NewEmployeeDto;
+import com.muiz6.system.attendance.ui.control.DatePickerDialog;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
-public class AddEmployeeContent {
+import java.net.URL;
+import java.util.ResourceBundle;
 
-	@FXML
-	private Button _btnBack;
-	@FXML
-	private Button _btnTimeInSame;
-	@FXML
-	private Button _btnTimeOutSame;
-	@FXML
-	private Button _btnTimeInMonday;
-	@FXML
-	private Button _btnTimeOutMonday;
-	@FXML
-	private Button _btnTimeInTuesday;
-	@FXML
-	private Button _btnTimeOutTuesday;
-	@FXML
-	private Button _btnTimeInWednesday;
-	@FXML
-	private Button _btnTimeOutWednesday;
-	@FXML
-	private Button _btnTimeInThursday;
-	@FXML
-	private Button _btnTimeOutThursday;
-	@FXML
-	private Button _btnTimeInFriday;
-	@FXML
-	private Button _btnTimeOutFriday;
-	@FXML
-	private Button _btnTimeInSaturday;
-	@FXML
-	private Button _btnTimeOutSaturday;
-	@FXML
-	private Button _btnTimeInSunday;
-	@FXML
-	private Button _btnTimeOutSunday;
-	@FXML
-	private RadioButton _btnRadioDifferent;
-	@FXML
-	private RadioButton _btnRadioSame;
+public class AddEmployeeContent extends AddEditEmployeeBase {
 
-	public void onOptionSelect(ActionEvent event) {
-		Button[] arr = {
-				_btnTimeInMonday,
-				_btnTimeOutMonday,
-				_btnTimeInTuesday,
-				_btnTimeOutTuesday,
-				_btnTimeInWednesday,
-				_btnTimeOutWednesday,
-				_btnTimeInThursday,
-				_btnTimeOutThursday,
-				_btnTimeInFriday,
-				_btnTimeOutFriday,
-				_btnTimeInSaturday,
-				_btnTimeOutSaturday,
-				_btnTimeInSunday,
-				_btnTimeOutSunday};
-		Object source = event.getSource();
-		if (source == _btnRadioSame && _btnRadioSame.isSelected()) {
-			_btnTimeInSame.setDisable(false);
-			_btnTimeOutSame.setDisable(false);
-			for (final Button i: arr) {
-				i.setDisable(true);
-			}
-		}
-		else if (source == _btnRadioDifferent
-				&& _btnRadioDifferent.isSelected()) {
-			_btnTimeInSame.setDisable(true);
-			_btnTimeOutSame.setDisable(true);
-			for (final Button i: arr) {
-				i.setDisable(false);
-			}
-		}
+	@Override
+	public void initialize(URL location, ResourceBundle resources) {
+
+		// show today's date on join-date button by default
+		textDate.setText(DatePickerDialog.getDateString(System.currentTimeMillis()));
 	}
 
-	public void onBtnClick(ActionEvent actionEvent) {
-		Object source = actionEvent.getSource();
-		if (source == _btnBack) {
+	@Override
+	public void onSubmitBtnClick() {
+		final NewEmployeeDto employee =  new NewEmployeeDto();
+		employee.setName(textName.getText());
+		employee.setJoinDate(getTextDateEpoch());
+		employee.setTimeInMonday(getTime(textTimeMonday));
+		employee.setTimeInTuesday(getTime(textTimeTuesday));
+		employee.setTimeInWednesday(getTime(textTimeWednesday));
+		employee.setTimeInThursday(getTime(textTimeThursday));
+		employee.setTimeInFriday(getTime(textTimeFriday));
+		employee.setTimeInSaturday(getTime(textTimeSaturday));
+		employee.setTimeInSunday(getTime(textTimeSunday));
+		Repository.addEmployee(employee, success -> {
+			if (success) {
+				final Alert alert = new Alert(Alert.AlertType.INFORMATION,
+						"Employee Added Successfully",
+						ButtonType.OK);
+				alert.setTitle("Success");
+				alert.setHeaderText(null);
+				alert.showAndWait();
 
-			// id will be ignored for back btn
-			_btnBack.fireEvent(new EmployeeItemEvent((byte) 0,
-					EmployeeItemEvent.BUTTON_TYPE_BACK));
-		}
+				// mark inserted employee absent for today
+				Repository.markEmployeeAbsentAll();
+			}
+			else {
+				final Alert alert = new Alert(Alert.AlertType.WARNING,
+						"Something went wrong!",
+						ButtonType.OK);
+				alert.setTitle("Failure");
+				alert.setHeaderText(null);
+				alert.showAndWait();
+			}
+		});
 	}
 }

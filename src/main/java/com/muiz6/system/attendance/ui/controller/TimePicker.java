@@ -15,6 +15,8 @@ public class TimePicker implements Initializable {
 
 	private final Dialog<Short> _dialog;
 	@FXML
+	private CheckBox _checkBoxMarkAll;
+	@FXML
 	private Button _btnOk;
 	@FXML
 	private CheckBox _checkBoxMarkHoliday;
@@ -51,11 +53,16 @@ public class TimePicker implements Initializable {
 				_comboBoxHour.setDisable(true);
 				_comboBoxMinute.setDisable(true);
 				_comboBoxPeriod.setDisable(true);
+
+				// admin must not mark holiday for all days
+				_checkBoxMarkAll.setSelected(false);
+				_checkBoxMarkAll.setDisable(true);
 			}
 			else {
 				_comboBoxHour.setDisable(false);
 				_comboBoxMinute.setDisable(false);
 				_comboBoxPeriod.setDisable(false);
+				_checkBoxMarkAll.setDisable(false);
 			}
 		}
 	}
@@ -102,7 +109,12 @@ public class TimePicker implements Initializable {
 		}
 	}
 
-	public void disableHolidayCheckbox(boolean state) {
-		_checkBoxMarkHoliday.setDisable(state);
+	public void setHolidayCheckboxSelected(boolean state) {
+		_checkBoxMarkHoliday.setSelected(state);
+		_checkBoxMarkHoliday.fireEvent(new ActionEvent());
+	}
+
+	public boolean isMarkForAll() {
+		return _checkBoxMarkAll.isSelected();
 	}
 }

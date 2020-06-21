@@ -6,9 +6,64 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<GridPane
+<?import javafx.geometry.Insets?>
+<?import com.muiz6.system.attendance.ui.control.TabButton?>
+
+<VBox
 	xmlns="http://javafx.com/javafx"
 	xmlns:fx="http://javafx.com/fxml"
-	fx:controller="com.muiz6.system.attendance.ui.controller.HolidayContent">
-	<Label text="Manage Holidays"/>
-</GridPane>
+	fx:controller="com.muiz6.system.attendance.ui.controller.HolidayContent"
+	spacing="15">
+
+	<padding>
+		<Insets topRightBottomLeft="15"/>
+	</padding>
+
+	<GridPane>
+		<Label
+			text="Day"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="0"/>
+
+		<Label
+			text="Date"
+			GridPane.rowIndex="0"
+			GridPane.columnIndex="1"/>
+
+		<columnConstraints>
+			<ColumnConstraints
+				percentWidth="40"
+				halignment="CENTER"/>
+			<ColumnConstraints
+				percentWidth="60"
+				halignment="CENTER"/>
+		</columnConstraints>
+	</GridPane>
+
+	<ListView
+		VBox.vgrow="ALWAYS"
+		fx:id="rowContainer"/>
+
+	<ScrollPane
+		fx:id="scrollPane"
+		vbarPolicy="NEVER"
+		fitToHeight="true">
+		<HBox
+			fx:id="tabContainer"
+			minWidth="${scrollPane.width}"
+			alignment="CENTER"
+			spacing="5">
+			<TabButton
+				fx:id="btnTab1"
+				text="1"
+				selected="true"/>
+		</HBox>
+	</ScrollPane>
+
+	<Button
+		fx:id="btnAdd"
+		maxWidth="Infinity"
+		text="Add"
+		onAction="#onAddBtnClick"/>
+
+</VBox>

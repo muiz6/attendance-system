@@ -8,8 +8,6 @@ import javafx.util.Pair;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public abstract class Util {
 
@@ -19,12 +17,13 @@ public abstract class Util {
 		// get gradle resource
 		final URL fxmlResource = ClassLoader.getSystemClassLoader()
 				.getResource(resource);
-		try {
-			final Node node = FXMLLoader.load(fxmlResource);
-			return node;
-		}
-		catch (IOException e) {
-			System.out.println(e.getMessage());
+		if (fxmlResource != null) {
+			try {
+				return FXMLLoader.load(fxmlResource);
+			}
+			catch (IOException e) {
+				System.out.println(e.getMessage());
+			}
 		}
 		return null;
 	}
@@ -68,11 +67,5 @@ public abstract class Util {
 			System.out.println(e.getMessage());
 		}
 		return null;
-	}
-
-	public static String getDate(long timestamp) {
-		SimpleDateFormat format = new SimpleDateFormat("dd-MMM-yy");
-		Date date = new Date(timestamp);
-		return format.format(date);
 	}
 }
